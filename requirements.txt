@@ -1,0 +1,4 @@
+mutagen==1.23
+ply==3.4
+slimit==0.8.1
+wgetter==0.3
