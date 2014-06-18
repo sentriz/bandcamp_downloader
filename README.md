@@ -17,13 +17,21 @@ Installation
 Requirements
 -----
 
-jsobj ((c) 2013 darkf, included) -website parsing.
+jsobj (**(c)** 2013 *darkf*, **included**) (website parsing)
 
-[mutagen](https://pypi.python.org/pypi/mutagen/1.12) (1.23) -mp3 tagging.
+[mutagen](https://pypi.python.org/pypi/mutagen) (mp3 tagging).
 
-[slimit](https://pypi.python.org/pypi/slimit) (0.8.1) -required by jsobj.
+[slimit](https://pypi.python.org/pypi/slimit) (required by jsobj).
 
-[wgetter](https://pypi.python.org/pypi/wgetter/) (0.3) -downloading files.
+[wgetter](https://pypi.python.org/pypi/wgetter) (downloading files).
+
+[colorama](https://pypi.python.org/pypi/colorama) (CLI colours).
+
+--
+
+Please note, you can download all of these in one step with
+
+    pip install -r requirements.txt
 
 Usage
 -----
