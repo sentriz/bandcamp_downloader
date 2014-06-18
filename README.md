@@ -11,7 +11,7 @@ Installation
 -----------
 
 	pip install -r requirements.txt
-	bandcamp_dlr --help
+	python bandcamp_dlr.py --help
 	
 
 Requirements
@@ -27,9 +27,23 @@ jsobj ((c) 2013 darkf, included) -website parsing.
 
 Usage
 -----
+    bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
+                    [--get-art] [--folder=<name>] [--exclude=<list>]
 
-	bandcamp_dlr artist album-name
-	bandcamp_dlr artist album-name [--art] [--dir DIR]
+Options
+-----
+    -h, --help       Show this screen.
+    -v, --version    Show version.
+    --get-art        Download album artwork.
+    --folder=<name>  Name of download folder [default: bandcamp_downloads].
+    --exclude=<list> List of tracks to exclude from download. (seperated by a space)
+
+Examples
+-----
+* no, these artists are /not/ not on Bandcamp *
+    bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --get-art
+    bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
+    bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3 5 7"
 	
 Note
 -----
