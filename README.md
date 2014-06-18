@@ -40,7 +40,8 @@ Options
 
 Examples
 -----
-* no, these artists are /not/ not on Bandcamp *
+no, these artists are *not* on Bandcamp
+
     bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --get-art
     bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
     bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3 5 7"
