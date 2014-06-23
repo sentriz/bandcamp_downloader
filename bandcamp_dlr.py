@@ -1,6 +1,4 @@
 """
-Bandcamp Downloader by sentriz.
-
 Usage:
   bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
                   [--get-art] [--folder=<name>] [--exclude=<list>]
@@ -9,7 +7,7 @@ Options:
   -h, --help       Show this screen.
   -v, --version    Show version.
   --get-art        Download album artwork.
-  --folder=<name>  Name of download folder [default: bandcamp_downloads].
+  --folder=<name>  Name of download folder [default: downloads].
   --exclude=<list> List of tracks to exclude from download. (seperated by a space)
 
 Examples:
@@ -20,8 +18,24 @@ Examples:
 """
 
 from docopt import docopt
-from Bandcamp import Bandcamp
+import Bandcamp
+import os
+import colorama
+from colorama import Fore, init
 
+colorama.init(autoreset = True)
+last_message = None
+
+# "doing task ... DONE"
+# "doing another task ... DONE"
+def show_status(message = "", status = Fore.GREEN + "done"):
+    global last_message
+    print(message + " ... ", end = "")
+    if last_message:
+        print("\r" + last_message + " ... " + status)
+        last_message = None
+    else:
+        last_message = message
 
 if __name__ == "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr 0.6")
@@ -35,46 +49,94 @@ if __name__ == "__main__":
 
         # or did they provide a URL?
         elif args['<url>']:
-            url = args['<url>']
-
-            # fixes = {
-                # 'bandcamp':
-                    # ('badncamp', 'bbandcamp', 'bandcmap'),
-                # 'album':
-                    # ('alubm', 'albun', 'abulm')
-                # }
-
-            # for right in fixes.items():
-                # for wrong in right[1]:
-                    # if wrong in url:
-                        # url = url.replace(wrong, right[0])
-
+        
             # was it a valid URL?
-            if not "bandcamp" in url and not "album" in url and \
-                url.startswith("http://"):
+            if not "bandcamp" in args['<url>'] or not "album" in args['<url>'] or \
+                not args['<url>'].startswith("http://"):
+                    print(Fore.RED + "\n" + "error: invalid URL.")
                     print(__doc__)
-                    print("\n" + "error: invalid URL.")
                     exit()
+            else:
+                url = args['<url>']
+                
         else:
             print(__doc__)
-            print("\n" + "error: please provide URL or artist/album.")
+            print(Fore.RED + "\n" + "error: please provide URL or artist/album.")
             exit()
 
+        # "1 2 3" >> [1, 2, 3]
         if args["--exclude"]:
-            exclude = args["--exclude"].split()
+            exclude = [int(n) for n in args["--exclude"].split()]
         else:
-            exclude = None
+            # None is not iterable, using []
+            exclude = []
+            
+        #if args["--get-art"]:
+            
 
     # or not.
     else:
         print(__doc__)
-        print("\n" + "error: please provide arguments.")
+        print(Fore.RED + "\n" + "error: please provide arguments.")
         exit()
 
-    bandcamp = Bandcamp(
-        url,
-        get_art = args["--get-art"],
-        folder = args["--folder"],
-        exclude = exclude
-        )
-    bandcamp.download()
+    ######################## <DIRECTORY CHANGING> ########################
+
+    # mkdir *"--folder" if needed
+    if not os.path.exists(args["--folder"]):
+        show_status("creating directory \"{}\"".format(args["--folder"]))
+        os.makedirs(args["--folder"])
+        
+        if os.path.exists(args["--folder"]):
+            show_status()
+        else:
+            show_status(status = Fore.RED + "failed")
+            print(__doc__)
+            exit()
+            
+    # cd *"--folder"
+    show_status("changing directory to \"{}\"".format(args["--folder"]))
+    os.chdir(os.path.join(os.getcwd(), args["--folder"]))
+    
+    if os.path.split(os.getcwd())[-1] == args["--folder"]:
+        show_status()
+    else:
+        show_status(status = Fore.RED + "failed")
+        print(__doc__)
+        exit()
+        
+    ########################
+        
+    # "%album% - %title%"
+    album_name = url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
+    folder_name = "{} - {}".format(*album_name)
+        
+    # mkdir *foldername if needed
+    if not os.path.exists(folder_name):
+        show_status("creating directory \"{}\"".format(folder_name))
+        os.makedirs(folder_name)
+        
+        if os.path.exists(folder_name):
+            show_status()
+        else:
+            show_status(status = Fore.RED + "failed")
+            print(__doc__)
+            exit()
+            
+    # cd *folder_name
+    show_status("changing directory to \"{}\"".format(folder_name))
+    os.chdir(os.path.join(os.getcwd(), folder_name))
+    
+    if os.path.split(os.getcwd())[-1] == folder_name:
+        show_status()
+    else:
+        show_status(status = Fore.RED + "failed")
+        print(__doc__)
+        exit()
+        
+    ######################## </DIRECTORY CHANGING> ########################
+    
+    # start
+    Bandcamp.download(url, args["--get-art"], exclude)
+
+    
