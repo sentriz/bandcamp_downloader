@@ -109,7 +109,7 @@ def download(url, get_art = False, exclude = None): #{
     #            <   0   >  < 1 >  <2>    <   0   >  < 1 >  <2>
             
 
-    for track in album_meta["tracks"]:
+    for track in album_meta["tracks"]:          
         track_num, title, url = track
         show_status("downloading track \"{}\" (#{})".format(title, track_num))
         if track_num not in exclude:
