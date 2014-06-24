@@ -108,7 +108,10 @@ if __name__ == "__main__":
     ########################
         
     # "%album% - %title%"
-    album_name = url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
+    album_name = list(url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|"))
+    if album_name[1].endswith("/"):
+        album_name[1] = album_name[1].replace("/", "")
+        
     folder_name = "{} - {}".format(*album_name)
         
     # mkdir *foldername if needed
