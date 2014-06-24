@@ -35,16 +35,16 @@ Please note, you can download all of these in one step with
 
 Usage
 -----
-    bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
-                    [--get-art] [--folder=<name>] [--exclude=<list>]
+  bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
+                  [--get-art] [--folder=<name>] [--exclude=<list>]
 
 Options
 -----
-    -h, --help       Show this screen.
-    -v, --version    Show version.
-    --get-art        Download album artwork.
-    --folder=<name>  Name of download folder [default: bandcamp_downloads].
-    --exclude=<list> List of tracks to exclude from download. (seperated by a space)
+  -h, --help       Show this screen.
+  -v, --version    Show version.
+  --get-art        Download album artwork.
+  --folder=<name>  Name of download folder [default: downloads].
+  --exclude=<list> List of tracks to exclude from download. (seperated by a space)
 
 Examples
 -----
@@ -57,8 +57,13 @@ no, these artists are *not* on Bandcamp
 Note
 -----
 
-Please note, I do not intend this script rip off emerging Bandcamp artists.
+By using the script above, you acknowledge and agree to the following terms of service/use:
 
-This script is useful to listen to Bandcamp albums on-the-go offline as a **try before you buy**.
+1.   Do not use this script to download copyrighted audio.
+2.   High quality audio is not guaranteed; the script uses audio provided by Bandcamp.
 
-Support Bandcamp artists if you like what you hear.
+Piracy: I do not condone piracy in any form. My goal that this tool be used to obtain legal audio that would otherwise be extremely difficult to find. Bandcamp is a good source for these audio clips and allows new artists to showcase their work and earn a rightful income from it. 
+
+To ensure the survival of this tool and to help the artists who are providing the music, please buy their singles/albums directly from Bandcamp.
+
+This script is just a simple tool, and I hope you will find it useful.
