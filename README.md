@@ -35,16 +35,17 @@ Please note, you can download all of these in one step with
 
 Usage
 -----
-  bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
-                  [--get-art] [--folder=<name>] [--exclude=<list>]
+
+    bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
+                    [--get-art] [--folder=<name>] [--exclude=<list>]
 
 Options
 -----
-  -h, --help       Show this screen.
-  -v, --version    Show version.
-  --get-art        Download album artwork.
-  --folder=<name>  Name of download folder [default: downloads].
-  --exclude=<list> List of tracks to exclude from download. (seperated by a space)
+    -h, --help       Show this screen.
+    -v, --version    Show version.
+    --get-art        Download album artwork.
+    --folder=<name>  Name of download folder [default: downloads].
+    --exclude=<list> List of tracks to exclude from download. (seperated by a space)
 
 Examples
 -----
