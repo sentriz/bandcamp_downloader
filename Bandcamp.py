@@ -1,24 +1,11 @@
-import urllib.request
-import wgetter
+import urllib.request, wgetter, jsobj
 import os
-import mutagen.mp3, mutagen.id3 
-import jsobj
+import mutagen.mp3, mutagen.id3
 import colorama
-from colorama import Fore, init
+from colorama import Fore
+from show_status import show_status
 
 colorama.init(autoreset = True)
-last_message = None
-
-# "doing task ... DONE"
-# "doing another task ... DONE"
-def show_status(message = "", status = Fore.GREEN + "done"):
-    global last_message
-    print(message + " ... ", end = "")
-    if last_message:
-        print("\r" + last_message + " ... " + status)
-        last_message = None
-    else:
-        last_message = message
 
 # not using command line?
 # download("http://URL", True, [1, 2])
