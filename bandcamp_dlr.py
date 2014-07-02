@@ -21,21 +21,10 @@ from docopt import docopt
 import Bandcamp
 import os
 import colorama
-from colorama import Fore, init
+from colorama import Fore, Style
+from show_status import show_status
 
 colorama.init(autoreset = True)
-last_message = None
-
-# "doing task ... DONE"
-# "doing another task ... DONE"
-def show_status(message = "", status = Fore.GREEN + "done"):
-    global last_message
-    print(message + " ... ", end = "")
-    if last_message:
-        print("\r" + last_message + " ... " + status)
-        last_message = None
-    else:
-        last_message = message
 
 if __name__ == "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr 0.6")
@@ -53,8 +42,19 @@ if __name__ == "__main__":
             # was it a valid URL?
             if not "bandcamp" in args['<url>'] or not "album" in args['<url>'] or \
                 not args['<url>'].startswith("http://"):
+                
                     print(Fore.RED + "\n" + "error: invalid URL.")
-                    print(__doc__)
+                    normal = Style.RESET_ALL + Fore.RED + Style.DIM
+                    bold = Style.RESET_ALL + Fore.RED + Style.BRIGHT
+                    print(
+                        normal
+                        + "URL must be in the format "
+                        + "http://" + bold + "artist"
+                        + normal + ".bandcamp.com/album/"
+                        + bold + "album" + normal
+                        + "/"
+                    )
+                    print("\n" + "\n".join(__doc__.split("\n")[1:4]))
                     exit()
             else:
                 url = args['<url>']
