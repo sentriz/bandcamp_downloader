@@ -17,15 +17,17 @@ Installation
 Requirements
 -----
 
-jsobj (**(c)** 2013 *darkf*, **included**) (website parsing)
-
 [mutagen](https://pypi.python.org/pypi/mutagen) (mp3 tagging).
 
-[slimit](https://pypi.python.org/pypi/slimit) (required by jsobj).
+[docopt](https://pypi.python.org/pypi/docopt) (argument parsing).
 
-[wgetter](https://pypi.python.org/pypi/wgetter) (downloading files).
+jsobj (**(c)** *darkf*, **included**) (website parsing)
 
-[colorama](https://pypi.python.org/pypi/colorama) (CLI colours).
+[slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*, **included**) (required by jsobj).
+
+[wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*, **included**) (downloading files).
+
+[colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*, **included**) (CLI colours).
 
 --
 
