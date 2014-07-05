@@ -1,3 +1,5 @@
+![!](.logo.png)
+
 bandcamp_dlr.py
 =============
 
