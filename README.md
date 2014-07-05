@@ -30,7 +30,7 @@ jsobj (**(c)** *darkf*, **included**) (website parsing)
 
 --
 
-Please note, you can download all of these in one step with
+Please note, you can download the required modules in one step with:
 
     pip install -r requirements.txt
 
@@ -42,6 +42,7 @@ Usage
 
 Options
 -----
+
     -h, --help       Show this screen.
     -v, --version    Show version.
     --get-art        Download album artwork.
@@ -50,7 +51,6 @@ Options
 
 Examples
 -----
-no, these artists are *not* on Bandcamp
 
     bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --get-art
     bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
