@@ -69,7 +69,7 @@ FAQ
 
 * *Will this software work on any OS?*
 
-    It has only been tested on a Windows machine (so far), but it has been developed in a way that should make it cross-platform (not cross-pyversion).
+    It has only been tested on a Windows machine (so far), but it has been developed in a way that should make it cross-platform. (but not cross-pyversion)
     
 Terms of service/use
 -----
