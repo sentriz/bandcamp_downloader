@@ -13,20 +13,24 @@ Installation
     python bandcamp_dlr.py --help
     
 
-Requirements
+Third party modules
 -----
+
+### required ###
 
 [mutagen](https://pypi.python.org/pypi/mutagen) (mp3 tagging).
 
 [docopt](https://pypi.python.org/pypi/docopt) (argument parsing).
 
-jsobj (**(c)** *darkf*, **included**) (website parsing)
+### included ###
 
-[slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*, **included**) (required by jsobj).
+[wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*) (downloading files).
 
-[wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*, **included**) (downloading files).
+jsobj (**(c)** *darkf*) (website parsing)
 
-[colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*, **included**) (CLI colours).
+[slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*) (required by jsobj).
+
+[colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*) (CLI colours).
 
 --
 
