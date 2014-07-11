@@ -38,11 +38,11 @@ if __name__ == "__main__":
 
         # or did they provide a URL?
         elif args['<url>']:
-        
+
             # was it a valid URL?
             if not "bandcamp" in args['<url>'] or not "album" in args['<url>'] or \
                 not args['<url>'].startswith("http://"):
-                
+
                     print(Fore.RED + "\n" + "error: invalid URL.")
                     normal = Style.RESET_ALL + Fore.RED + Style.DIM
                     bold = Style.RESET_ALL + Fore.RED + Style.BRIGHT
@@ -51,14 +51,13 @@ if __name__ == "__main__":
                         + "URL must be in the format "
                         + "http://" + bold + "artist"
                         + normal + ".bandcamp.com/album/"
-                        + bold + "album" + normal
-                        + "/"
+                        + bold + "album" + normal + "/"
                     )
                     print("\n" + "\n".join(__doc__.split("\n")[1:4]))
                     exit()
             else:
                 url = args['<url>']
-                
+
         else:
             print(__doc__)
             print(Fore.RED + "\n" + "error: please provide URL or artist/album.")
@@ -70,9 +69,9 @@ if __name__ == "__main__":
         else:
             # None is not iterable, using []
             exclude = []
-            
+
         #if args["--get-art"]:
-            
+
 
     # or not.
     else:
@@ -80,66 +79,44 @@ if __name__ == "__main__":
         print(Fore.RED + "\n" + "error: please provide arguments.")
         exit()
 
-    ######################## <DIRECTORY CHANGING> ########################
+ ############# <DIRECTORY CHANGING> #############
 
-    # mkdir *"--folder" if needed
-    if not os.path.exists(args["--folder"]):
-        show_status("creating directory \"{}\"".format(args["--folder"]))
-        os.makedirs(args["--folder"])
-        
-        if os.path.exists(args["--folder"]):
+def mk_cd(dir_name):
+
+    # mkdir dir_name if needed
+    if not os.path.exists(dir_name):
+        show_status("creating directory \"{}\"".format(dir_name))
+        os.makedirs(dir_name)
+
+        if os.path.exists(dir_name):
             show_status()
         else:
             show_status(status = Fore.RED + "failed")
             print(__doc__)
             exit()
-            
-    # cd *"--folder"
-    show_status("changing directory to \"{}\"".format(args["--folder"]))
-    os.chdir(os.path.join(os.getcwd(), args["--folder"]))
-    
-    if os.path.split(os.getcwd())[-1] == args["--folder"]:
-        show_status()
-    else:
-        show_status(status = Fore.RED + "failed")
-        print(__doc__)
-        exit()
-        
-    ########################
-        
-    # "%album% - %title%"
-    album_name = list(url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|"))
-    if album_name[1].endswith("/"):
-        album_name[1] = album_name[1].replace("/", "")
-        
-    folder_name = "{} - {}".format(*album_name)
-        
-    # mkdir *foldername if needed
-    if not os.path.exists(folder_name):
-        show_status("creating directory \"{}\"".format(folder_name))
-        os.makedirs(folder_name)
-        
-        if os.path.exists(folder_name):
-            show_status()
-        else:
-            show_status(status = Fore.RED + "failed")
-            print(__doc__)
-            exit()
-            
-    # cd *folder_name
-    show_status("changing directory to \"{}\"".format(folder_name))
-    os.chdir(os.path.join(os.getcwd(), folder_name))
-    
-    if os.path.split(os.getcwd())[-1] == folder_name:
-        show_status()
-    else:
-        show_status(status = Fore.RED + "failed")
-        print(__doc__)
-        exit()
-        
-    ######################## </DIRECTORY CHANGING> ########################
-    
-    # start
-    Bandcamp.download(url, args["--get-art"], exclude)
 
-    
+    # cd dir_name
+    show_status("changing directory to \"{}\"".format(dir_name))
+    os.chdir(os.path.join(os.getcwd(), dir_name))
+
+    if os.path.split(os.getcwd())[-1] == dir_name:
+        show_status()
+    else:
+        show_status(status = Fore.RED + "failed")
+        print(__doc__)
+        exit()
+
+# "%album% - %title%"
+album_name = list(url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|"))
+if album_name[1].endswith("/"):
+    album_name[1] = album_name[1].replace("/", "")
+
+album_name = "{} - {}".format(*album_name)
+
+mk_cd(args["--folder"])
+mk_cd(album_name)
+
+ ############# </DIRECTORY CHANGING> ############
+
+# start
+Bandcamp.download(url, args["--get-art"], exclude)
