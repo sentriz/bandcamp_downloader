@@ -20,3 +20,15 @@ def show_status(message = "", status = (Fore.GREEN + "done")):
         
     else:
         last_message = message
+        
+# testing
+if __name__ == "__main__":
+    import time
+    
+    show_status("testing")
+    time.sleep(1)
+    show_status()
+    
+    show_status("testing again")
+    time.sleep(1)
+    show_status(status = Fore.RED + "failed")
