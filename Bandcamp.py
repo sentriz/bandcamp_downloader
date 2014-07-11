@@ -68,22 +68,23 @@ def download(url, get_art = False, exclude = None): #{
     show_status("stripping page")
     data = data.split("var TralbumData = {\n")[-1]
     data = data[0:data.index("};")]
-    data = jsobj.read_js_object("var bcd = {" + data + "};")
+    # "_": less typing..
+    data = jsobj.read_js_object("var _ = {" + data + "};")
     show_status()
 
     show_status("sorting data")
     album_meta = {
-        "title": data["bcd"]["current"]["title"],
-        "artist": data["bcd"]["artist"],
-        "album_artist": data["bcd"]["artist"],
+        "title": data["_"]["current"]["title"],
+        "artist": data["_"]["artist"],
+        "album_artist": data["_"]["artist"],
         "tracks": [],
-        "total_tracks": len(data["bcd"]["trackinfo"]),
-        "year": data["bcd"]["album_release_date"].split(" ")[2],
-        "art_url": data["bcd"]["artFullsizeUrl"]
+        "total_tracks": len(data["_"]["trackinfo"]),
+        "year": data["_"]["album_release_date"].split(" ")[2],
+        "art_url": data["_"]["artFullsizeUrl"]
     }
 
     # fill in "tracks" of album_meta
-    for track in data["bcd"]["trackinfo"]:
+    for track in data["_"]["trackinfo"]:
         album_meta["tracks"].append(
             (int(track["track_num"]), track["title"], track["file"]["mp3-128"])
         )
