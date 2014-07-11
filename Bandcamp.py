@@ -48,10 +48,9 @@ def download(url, get_art = False, exclude = None): #{
         show_status()
     #}
         
-    def download_art(url): #{
+    def download_art(url):
         raw_file = wgetter.download(url)
         os.rename(raw_file, "front.jpg")
-    #}
 
     # open page, decode it, store it as data, close it
     try:
@@ -87,8 +86,7 @@ def download(url, get_art = False, exclude = None): #{
     for track in data["bcd"]["trackinfo"]:
         album_meta["tracks"].append(
             (int(track["track_num"]), track["title"], track["file"]["mp3-128"])
-                )
-    
+        )
     show_status()
 
     # {tracks: [(track no., title, url), (track no., title, url)]}
@@ -117,7 +115,6 @@ def download(url, get_art = False, exclude = None): #{
         show_status("downloading artwork")
         download_art(album_meta["art_url"])
         show_status()
-        
 #}
         
     
