@@ -19,7 +19,7 @@ Examples:
 
 from docopt import docopt
 import Bandcamp
-import os
+import os, sys
 import colorama
 from colorama import Fore, Style
 from show_status import show_status
@@ -54,14 +54,14 @@ if __name__ == "__main__":
                         + bold + "album" + normal + "/"
                     )
                     print("\n" + "\n".join(__doc__.split("\n")[1:4]))
-                    exit()
+                    sys.exit(1)
             else:
                 url = args['<url>']
 
         else:
             print(__doc__)
             print(Fore.RED + "\n" + "error: please provide URL or artist/album.")
-            exit()
+            sys.exit(1)
 
         # "1 2 3" >> [1, 2, 3]
         if args["--exclude"]:
@@ -77,7 +77,7 @@ if __name__ == "__main__":
     else:
         print(__doc__)
         print(Fore.RED + "\n" + "error: please provide arguments.")
-        exit()
+        sys.exit(1)
 
  ############# <DIRECTORY CHANGING> #############
 
@@ -93,7 +93,7 @@ def mk_cd(dir_name):
         else:
             show_status(status = Fore.RED + "failed")
             print(__doc__)
-            exit()
+            sys.exit(1)
 
     # cd dir_name
     show_status("changing directory to \"{}\"".format(dir_name))
@@ -104,7 +104,7 @@ def mk_cd(dir_name):
     else:
         show_status(status = Fore.RED + "failed")
         print(__doc__)
-        exit()
+        sys.exit(1)
 
 # "%album% - %title%"
 album_name = list(url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|"))

@@ -1,5 +1,5 @@
 import urllib.request, wgetter, jsobj
-import os
+import os, sys
 import mutagen.mp3, mutagen.id3
 import colorama
 from colorama import Fore
@@ -60,7 +60,7 @@ def download(url, get_art = False, exclude = None): #{
     except urllib.error.URLError:
         show_status(status = Fore.RED + "failed")
         print(__doc__)
-        exit()
+        sys.exit(1)
     data = page.read().decode("utf-8")
     page.close()
 
