@@ -1,6 +1,6 @@
 ![!](.logo.png)
 
-bandcamp_dlr is a python 3+ script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
+bandcamp_dlr is a python **3+** script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
 
 You must supply the script and artist, and an album name. These must be exactly how you see them in the album url.
 
@@ -18,19 +18,19 @@ Third party modules
 
 ### required ###
 
-[mutagen](https://pypi.python.org/pypi/mutagen) (mp3 tagging).
+* [mutagen](https://pypi.python.org/pypi/mutagen) (mp3 tagging).
 
-[docopt](https://pypi.python.org/pypi/docopt) (argument parsing).
+* [docopt](https://pypi.python.org/pypi/docopt) (argument parsing).
 
 ### included ###
 
-[wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*) (downloading files).
+* [wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*) (downloading files).
 
-jsobj (**(c)** *darkf*) (website parsing)
+* jsobj (**(c)** *darkf*) (website parsing)
 
-[slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*) (required by jsobj).
+* [slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*) (required by jsobj).
 
-[colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*) (CLI colours).
+* [colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*) (CLI colours).
 
 --
 
@@ -59,6 +59,17 @@ Examples
     bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --get-art
     bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
     bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3 5 7"
+    
+FAQ
+-----
+
+* *Download has stopped at x%, help?*
+
+    Send your shell a KeyboardInterrupt. ^C, ^Z, ect.
+
+* *Will this software work on any OS?*
+
+    It has only been tested on a Windows machine (so far), but it has been developed in a way that should make it cross-platform (not cross-pyversion).
     
 Terms of service/use
 -----
