@@ -60,7 +60,7 @@ Examples
     bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
     bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3 5 7"
     
-Note
+Terms of service/use
 -----
 
 By using the script above, you acknowledge and agree to the following terms of service/use:
