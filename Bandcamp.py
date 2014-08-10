@@ -1,4 +1,6 @@
-import urllib.request, wgetter, jsobj
+from urllib.request import Request, urlopen
+from urllib.error import URLError, HTTPError
+import wgetter, jsobj
 import os, sys
 import mutagen.mp3, mutagen.id3
 import colorama
@@ -19,8 +21,7 @@ def download(url, get_art = False, exclude = None): #{
         """
         
         # aesthetics
-        print("[{}] writing id3 tags ...".format(filename))
-        print("  {}  ".format("-"*(19 + len(filename))))
+        print("\n[{}] writing id3 tags ...".format(filename))
         
         # ID3v2.4 tag ID as key, track metadata as values in dict "tags"
         tags = {
@@ -43,8 +44,7 @@ def download(url, get_art = False, exclude = None): #{
         track.save()
 
         # aesthetics
-        print("  {}  ".format("-"*(19 + len(filename))))
-        show_status("[{}] writing id3 tags ...".format(filename))
+        show_status("[{}] writing id3 tags ...\n".format(filename))
         show_status()
     #}
         
@@ -53,18 +53,32 @@ def download(url, get_art = False, exclude = None): #{
         os.rename(raw_file, "front.jpg")
 
     # open page, decode it, store it as data, close it
-    try:
-        show_status("attempting to open URL")
-        page = urllib.request.urlopen(url)
-        show_status()
-    except urllib.error.URLError:
-        show_status(status = Fore.RED + "failed")
-        print(__doc__)
-        sys.exit(1)
-    data = page.read().decode("utf-8")
-    page.close()
+    def open_url(url, user_agent = "Mozilla/4.0 (compatible; MSIE 5.5; Windows NT)"):
+
+        req = Request(url)
+        headers = {
+            "User-Agent": user_agent
+        }
+        try:
+            response = urlopen(req)
+        except URLError as e:
+            if hasattr(e, "reason"):
+                print("We failed to reach a server.")
+                print("Reason:", e.reason)
+            elif hasattr(e, "code"):
+                print("The server couldn't fulfill the request.")
+                print("Error code:", e.code)
+        else:
+            req = Request(url, headers = headers)
+            response = urlopen(req)
+            data = response.read()
+        finally:
+           response.close()
+           
+        return data.decode("utf-8")
 
     # split page
+    data = open_url(url)
     show_status("stripping page")
     data = data.split("var TralbumData = {\n")[-1]
     data = data[0:data.index("};")]
