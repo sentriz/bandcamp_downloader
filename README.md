@@ -1,5 +1,3 @@
-Hiya bab.
-
 ![!](.logo.png)
 
 bandcamp_dlr is a python **3+** script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
