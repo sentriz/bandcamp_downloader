@@ -39,7 +39,7 @@ def error():
     sys.exit(1)
 
 if __name__ == "__main__":
-    args = docopt(__doc__, version = "bandcamp_dlr 0.6")
+    args = docopt(__doc__, version = "bandcamp_dlr v1.1")
 
     show_status("parsing arguments")
     if args:
