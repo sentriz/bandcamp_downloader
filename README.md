@@ -82,5 +82,3 @@ By using the script above, you acknowledge and agree to the following terms of s
 Piracy: I do not condone piracy in any form. My goal that this tool be used to obtain legal audio that would otherwise be extremely difficult to find. Bandcamp is a good source for these audio clips and allows new artists to showcase their work and earn a rightful income from it.
 
 To ensure the survival of this tool and to help the artists who are providing the music, please buy their singles/albums directly from Bandcamp.
-
-This script is just a simple tool, and I hope you will find it useful.
