@@ -76,18 +76,18 @@ if __name__ == "__main__":
             show_status("will get artwork", once_off = True)
         else:
             get_art = False
-            
-        # "%album% - %title%"
-        album_name = "{} - {}".format(
-            *url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
-        )
-        
-        # make and change directories
-        mk_cd(args["--folder"])
-        mk_cd(album_name)
-
-        # start
-        Bandcamp.download(url, get_art, exclude_list)
     else:
         show_status(status = "%red%none found")
         error()
+        
+    # "%album% - %title%"
+    album_name = "{} - {}".format(
+        *url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
+    )
+    
+    # make and change directories
+    mk_cd(args["--folder"])
+    mk_cd(album_name)
+
+    # start
+    Bandcamp.download(url, get_art, exclude_list)
