@@ -8,13 +8,13 @@ Options:
   -v, --version    Show version.
   --get-art        Download album artwork.
   --folder=<name>  Name of download folder [default: downloads].
-  --exclude=<list> List of tracks to exclude from download. (seperated by a space)
+  --exclude=<list> List of tracks to exclude from download. (seperated by ",")
 
 Examples:
   * no, these artists are /not/ not on Bandcamp *
   bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --get-art
   bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
-  bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3 5 7"
+  bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3, 5, 7"
 """
 
 from docopt import docopt
@@ -48,7 +48,8 @@ if __name__ == "__main__":
             artist, album = args['--artist'], args['--album']
             url = "http://{}.bandcamp.com/album/{}".format(artist, album)
         elif args['<url>']:
-            if (not "bandcamp" in args['<url>']) or (not "album" in args['<url>']) or (not args['<url>'].startswith("http://")):
+            if (not "bandcamp" in args['<url>']) or (not "album" in args['<url>']) \
+                or (not args['<url>'].startswith("http://")):
                 show_status(status = "%red%invalid URL found")
                 error()
             else:
@@ -62,19 +63,31 @@ if __name__ == "__main__":
             error()
             
         if args["--exclude"]:
-            exclude = [int(n) for n in args["--exclude"].split()]
+            exclude_list = [int(n) for n in args["--exclude"].replace(" ", "").split(",")]
+            show_status("excluding track{s_or_nah} {exclude_list}".format(
+                s_or_nah = "" if len(exclude_list) == 1 else "s",
+                exclude_list = exclude_list
+            ), once_off = True)
         else:
-            exclude = [] # None is not iterable
+            exclude_list = [] # None is not iterable
+            
+        if args["--get-art"]:
+            get_art = True
+            show_status("will get artwork", once_off = True)
+        else:
+            get_art = False
             
         # "%album% - %title%"
-        album_name = url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
-        album_name = "{} - {}".format(*album_name)
+        album_name = "{} - {}".format(
+            *url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
+        )
         
+        # make and change directories
         mk_cd(args["--folder"])
         mk_cd(album_name)
 
         # start
-        Bandcamp.download(url, args["--get-art"], exclude)
+        Bandcamp.download(url, get_art, exclude_list)
     else:
         show_status(status = "%red%none found")
         error()

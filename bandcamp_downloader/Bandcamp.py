@@ -5,7 +5,7 @@ import os, sys
 import mutagen.mp3, mutagen.id3
 from show_status import show_status
 
-def download(url, get_art = False, exclude = None): #{
+def download(url, get_art, exclude): #{
 
     def write_tags(filename, track_num): #{
         """
@@ -14,16 +14,16 @@ def download(url, get_art = False, exclude = None): #{
         """
         
         # aesthetics
-        show_status("\n[{}] writing id3 tags ...".format(filename))
+        print()
+        show_status("writing id3 tags for file \"{}\"".format(filename), once_off=True)
         
         # ID3v2.4 tag ID as key, track metadata as values in dict "tags"
         tags = {
             "TIT2": (album_meta["tracks"][track_num - 1][1], "title"),
             "TPE1": (album_meta["artist"], "artist"),
             "TPE2": (album_meta["album_artist"], "album artist"),
-            "TRCK": ("{}/{}".format(
-                album_meta["tracks"][track_num - 1][0], album_meta[\
-                    "total_tracks"]), "track no./total"),
+            "TRCK": ("{}/{}".format(album_meta["tracks"][track_num - 1][0],
+                album_meta["total_tracks"]), "track no./total"),
             "TYER": (album_meta["year"], "year"),
             "TALB": (album_meta["title"], "album")
             }
@@ -33,17 +33,15 @@ def download(url, get_art = False, exclude = None): #{
         for tag, tuple in tags.items():
             value, name = tuple
             track[tag] = getattr(mutagen.id3, tag)(encoding = 3, text = [value])
-            print("[{}] {}: \"{}\"".format(filename, name, value))
+            print("{}: \"{}\"".format(name, value))
         track.save()
 
     #}
-        
-    def download_art(url):
-        raw_file = wgetter.download(url)
-        os.rename(raw_file, "front.jpg")
 
     # open page, decode it, store it as data, close it
-    def open_url(url, user_agent = "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Win64; x64; Trident/5.0)"):
+    def open_url(url, user_agent=None): #{
+        user_agent = user_agent or "Mozilla/5.0 (compatible; MSIE 9.0;" \
+            " Windows NT 6.1; Win64; x64; Trident/5.0)"
     
         try:
             show_status("downloading webpage")
@@ -54,12 +52,16 @@ def download(url, get_art = False, exclude = None): #{
             show_status(status = "%green%done")
         except URLError as e:
             if hasattr(e, "reason"):
-                show_status(status = "%red%failed to reach a server. reason: \"{}\"".format(e.reason))
+                show_status(status = "%red%failed to reach a server." \
+                    " reason: \"{}\"".format(e.reason))
             elif hasattr(e, "code"):
-                show_status(status = "%red%server couldn't fulfil the request. code: \"{}\"".format(e.code))
+                show_status(status = "%red%server couldn't fulfil the request." \
+                    " code: \"{}\"".format(e.code))
             sys.exit(1)
                 
         return data.decode(sys.stdout.encoding)
+        
+    #}
 
     # split page
     data = open_url(url)
@@ -67,7 +69,7 @@ def download(url, get_art = False, exclude = None): #{
     data = data.split("var TralbumData = {\n")[-1]
     data = data[0:data.index("};")]
     data = jsobj.read_js_object("var _ = {" + data + "};")
-    show_status()
+    show_status(status = "%green%done")
 
     show_status("sorting data")
     album_meta = {
@@ -85,37 +87,28 @@ def download(url, get_art = False, exclude = None): #{
         album_meta["tracks"].append(
             (int(track["track_num"]), track["title"], track["file"]["mp3-128"])
         )
-    show_status()
+    show_status(status = "%green%done")
 
     # {tracks: [(track no., title, url), (track no., title, url)]}
     #            <         0         >    <         1         >
     #            <   0   >  < 1 >  <2>    <   0   >  < 1 >  <2>
-            
 
     for track in album_meta["tracks"]:          
         track_num, title, url = track
-        show_status("downloading track \"{}\" (#{})".format(title, track_num))
         if track_num not in exclude:
-            show_status(status = "")
+            show_status("%green%downloading %reset%track #{} \"{}\" ".format(track_num, title), once_off = True)
             raw_file = wgetter.download(url)
-            show_status("downloading track \"{}\" (#{})".format(title, track_num))
-            show_status()
             new_file = "{}. {}.mp3".format(track_num, title)
-            show_status("renaming file to \"{}\"".format(new_file))
             os.rename(raw_file, new_file)
-            show_status()
-            
             write_tags(new_file, track_num)
         else:
-            show_status(status = Fore.RED + "skipped")
+            show_status("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off = True)
             
     if get_art:
-        show_status("downloading artwork")
-        download_art(album_meta["art_url"])
-        show_status()
+        try:
+            raw_file = wgetter.download(album_meta["art_url"])
+            os.rename(raw_file, "front.jpg")
+            show_status("downloading artwork %green%done", once_off = True)
+        except (FileNotFoundError, FileExistsError):
+            show_status("downloading artwork %red%failed", once_off = True)
 #}
-        
-    
-# TODO:
-#     - make bulletproof
-#     - more try/except
