@@ -26,7 +26,7 @@ def download(url, get_art, exclude): #{
                 album_meta["total_tracks"]), "track no./total"),
             "TYER": (album_meta["year"], "year"),
             "TALB": (album_meta["title"], "album")
-            }
+        }
 
         # tag track with the help of dict "tags" and getattr()()
         track = mutagen.mp3.MP3(filename)
