@@ -1,3 +1,8 @@
+"""
+This module may be stupid, but I couldn't think of a better way of doing - 
+what I wanted to do.. Maybe I'll think of it later. - sentriz
+"""
+
 from colorama import Fore, Style, init
 init(autoreset = True)
 
@@ -19,14 +24,14 @@ def show_status(message = "", status = "", once_off = False):
     status = replace_text(status)
     
     if not once_off:
-        print(message + "... ", end = "")
+        print(">", message + "... ", end = "")
         if last_message:
-            print("\r" + last_message + "... " + status)
+            print("\r> " + last_message + "... " + status + " "*5)
             last_message = None
         else:
             last_message = message
     else:
-        print(message + replace_text("%yellow% .....%reset%"))
+        print(replace_text("> " + message))
         
 # testing
 if __name__ == "__main__":
@@ -39,6 +44,7 @@ if __name__ == "__main__":
     show_status("doing something else")
     time.sleep(.1)
     show_status(status = "%red%failed")
+  
     time.sleep(.1)
     show_status("doing weird thing", once_off = True)
     time.sleep(.1)
@@ -47,3 +53,4 @@ if __name__ == "__main__":
     show_status("doing something else, will faileds")
     time.sleep(.1)
     show_status(status = "%red%faileds")
+  
