@@ -61,7 +61,9 @@ def download(url, get_art, exclude): #{
                     " code: \"{}\"".format(e.code))
             error()
 
-        return data.decode(sys.stdout.encoding)
+        return data.decode(sys.stdout.encoding) # yes, what is this you ask?
+                                                # couldn't pick a coding because I'm clueless when it comes to them.
+                                                # just give me a little while.
 
     #}
 
