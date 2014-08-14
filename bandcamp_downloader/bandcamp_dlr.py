@@ -18,10 +18,9 @@ Examples:
 """
 
 from docopt import docopt
-
-import Bandcamp
 from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import url_is_valid, mk_cd, error
+import Bandcamp
 
 if __name__ == "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr v1.1")

@@ -24,6 +24,7 @@ def url_is_valid(url):
     
 def error():
     print("- see bandcamp_dlr.py --help")
+    print("- ^ that message may not be appropriate")
     sys.exit(1)
     
 if __name__ == "__main__":
