@@ -17,35 +17,12 @@ Examples:
   bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3, 5, 7"
 """
 
-from docopt import docopt
-import Bandcamp
 import os, sys
-import colorama
-from show_status import show_status
+from docopt import docopt
 
-def mk_cd(dir_name):
-
-    try:
-        show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
-        os.makedirs(dir_name)
-        show_status(status = "%green%done")
-    except FileExistsError:
-        show_status(status = "%yellow%already exists")
-    except (PermissionError, OSError):
-        show_status(status = "%red%failed")
-        error()
-    os.chdir(dir_name)
-        
-def error():
-    print("- see bandcamp_dlr.py --help")
-    sys.exit(1)
-    
-def url_is_valid(url):
-    requirements = ["http", "://", ".bandcamp.com", "/album/"] 
-    for part in requirements:
-        if url.find(part) < 0:
-            return False
-    return True
+import Bandcamp
+from lib.utilities.aesthetics import show_status
+from lib.utilities.functions import url_is_valid, mk_cd, error
 
 if __name__ == "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr v1.1")
@@ -80,11 +57,8 @@ if __name__ == "__main__":
             # remove trailing slash
             if url[-1] == "/": url = url[:-1] 
         else:
-            show_status(status = "%red%invalid URL found")
+            show_status(status = "%red%invalid URL")
             error()
-    else:
-        show_status(status = "%red%URL or artist/album not provided")
-        error()
         
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
     
@@ -105,7 +79,6 @@ if __name__ == "__main__":
     # make and change directories
     mk_cd(folder)
     mk_cd(album_name)
-        
 
     # start
     Bandcamp.download(url, get_art, exclude_list)
