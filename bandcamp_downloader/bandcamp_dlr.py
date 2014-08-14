@@ -17,7 +17,6 @@ Examples:
   bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3, 5, 7"
 """
 
-import os, sys
 from docopt import docopt
 
 import Bandcamp
@@ -83,5 +82,3 @@ if __name__ == "__main__":
 
     # start
     Bandcamp.download(url, get_art, exclude_list)
-    
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
