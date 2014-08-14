@@ -1,7 +1,7 @@
 from ..colorama import Fore, Style, init
 
 """
-This module may be stupid, but I couldn't think of a better way of doing - 
+This module may be stupid, but I couldn't think of a better way of doing
 what I wanted to do.. Maybe I'll think of it later. - sentriz
 """
 

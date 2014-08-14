@@ -1,12 +1,12 @@
-import os
-import sys
-import mutagen.mp3, mutagen.id3
-from urllib.request import Request, urlopen
-from urllib.error import URLError, HTTPError
-import lib.wgetter
-import lib.jsobj
 from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import error
+from urllib.error import URLError, HTTPError
+from urllib.request import Request, urlopen
+import lib.jsobj
+import lib.wgetter
+import mutagen.mp3, mutagen.id3
+import os
+import sys
 
 def download(url, get_art, exclude): #{
 
@@ -54,11 +54,13 @@ def download(url, get_art, exclude): #{
             show_status(status = "%green%done")
         except URLError as e:
             if hasattr(e, "reason"):
-                show_status(status = "%red%failed to reach a server." \
+                show_status(status = "%red%failed to reach a server" \
                     " reason: \"{}\"".format(e.reason))
             elif hasattr(e, "code"):
-                show_status(status = "%red%server couldn't fulfil the request." \
+                show_status(status = "%red%server couldn't fulfil the request" \
                     " code: \"{}\"".format(e.code))
+            else:
+                show_status(status = "%red%unknown \"URLError\"")
             error()
 
         return data.decode(sys.stdout.encoding) # yes, what is this you ask?
