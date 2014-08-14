@@ -1,4 +1,5 @@
 import os
+import sys
 import mutagen.mp3, mutagen.id3
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
@@ -69,7 +70,7 @@ def download(url, get_art, exclude): #{
     show_status("stripping page")
     data = data.split("var TralbumData = {\n")[-1]
     data = data[0:data.index("};")]
-    data = jsobj.read_js_object("var _ = {" + data + "};")
+    data = lib.jsobj.read_js_object("var _ = {" + data + "};")
     show_status(status = "%green%done")
 
     show_status("sorting data")
@@ -99,7 +100,7 @@ def download(url, get_art, exclude): #{
         print()
         if track_num not in exclude:
             show_status("%green%downloading %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
-            raw_file = wgetter.download(url)
+            raw_file = lib.wgetter.download(url)
             new_file = "{}. {}.mp3".format(track_num, title)
             os.rename(raw_file, new_file)
             write_tags(new_file, track_num)
@@ -110,7 +111,7 @@ def download(url, get_art, exclude): #{
     if get_art:
         try:
             show_status("%green%downloading %reset%artwork", once_off=True)
-            raw_file = wgetter.download(album_meta["art_url"])
+            raw_file = lib.wgetter.download(album_meta["art_url"])
             os.rename(raw_file, "front.jpg")
         except (FileNotFoundError, FileExistsError):
             show_status("%red%failed %reset%to download (or rename) artwork", once_off=True)
