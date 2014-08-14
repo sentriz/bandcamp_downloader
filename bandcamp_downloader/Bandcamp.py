@@ -1,9 +1,11 @@
+import os
+import mutagen.mp3, mutagen.id3
 from urllib.request import Request, urlopen
 from urllib.error import URLError, HTTPError
-import wgetter, jsobj
-import os, sys
-import mutagen.mp3, mutagen.id3
-from show_status import show_status
+import lib.wgetter
+import lib.jsobj
+from lib.utilities.aesthetics import show_status
+from lib.utilities.functions import error
 
 def download(url, get_art, exclude): #{
 
@@ -12,10 +14,10 @@ def download(url, get_art, exclude): #{
         > write tags to filename
         * not using EasyID3 because download() downloads files with no tags.
         """
-        
+
         print()
         show_status("writing id3 tags for file \"{}\"".format(filename), once_off=True)
-        
+
         # ID3v2.4 tag ID as key, track metadata as values in dict "tags"
         tags = {
             "TIT2": (album_meta["tracks"][track_num - 1][1], "title"),
@@ -41,7 +43,7 @@ def download(url, get_art, exclude): #{
     def open_url(url, user_agent=None): #{
         user_agent = user_agent or "Mozilla/5.0 (compatible; MSIE 9.0;" \
             " Windows NT 6.1; Win64; x64; Trident/5.0)"
-    
+
         try:
             show_status("downloading webpage")
             req = Request(url, headers = {"User-Agent": user_agent})
@@ -56,10 +58,10 @@ def download(url, get_art, exclude): #{
             elif hasattr(e, "code"):
                 show_status(status = "%red%server couldn't fulfil the request." \
                     " code: \"{}\"".format(e.code))
-            sys.exit(1)
-                
+            error()
+
         return data.decode(sys.stdout.encoding)
-        
+
     #}
 
     # split page
@@ -92,7 +94,7 @@ def download(url, get_art, exclude): #{
     #            <         0         >    <         1         >
     #            <   0   >  < 1 >  <2>    <   0   >  < 1 >  <2>
 
-    for track in album_meta["tracks"]:          
+    for track in album_meta["tracks"]:
         track_num, title, url = track
         print()
         if track_num not in exclude:
@@ -103,7 +105,7 @@ def download(url, get_art, exclude): #{
             write_tags(new_file, track_num)
         else:
             show_status("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
-            
+
     print()
     if get_art:
         try:
@@ -113,7 +115,7 @@ def download(url, get_art, exclude): #{
         except (FileNotFoundError, FileExistsError):
             show_status("%red%failed %reset%to download (or rename) artwork", once_off=True)
         finally:
-            os.path.isfile(raw_file):
+            if os.path.isfile(raw_file):
                 os.remove(raw_file)
     else:
         show_status("%yellow%skipping %reset%artwork", once_off=True)
