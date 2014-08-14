@@ -20,18 +20,15 @@ def show_status(message = "", status = "", once_off = False):
             string = string.replace(alias, esc)
         return string
     
-    message = replace_text(message)
-    status = replace_text(status)
-    
     if not once_off:
-        print(">", message + "... ", end = "")
+        print(replace_text("%dim%> %bright%" + message + "... "), end = "")
         if last_message:
-            print("\r> " + last_message + "... " + status + " "*5)
+            print(replace_text("\r%dim%> %bright%" + last_message + "... " + status + " "*5))
             last_message = None
         else:
             last_message = message
     else:
-        print(replace_text("> " + message))
+        print(replace_text("%dim%> %bright%" + message))
         
 # testing
 if __name__ == "__main__":
@@ -46,9 +43,9 @@ if __name__ == "__main__":
     show_status(status = "%red%failed")
   
     time.sleep(.1)
-    show_status("doing weird thing", once_off = True)
+    show_status("doing weird thing", once_off=True)
     time.sleep(.1)
-    show_status("doing weird thing again", once_off = True)
+    show_status("doing weird thing again", once_off=True)
     time.sleep(.1)
     show_status("doing something else, will faileds")
     time.sleep(.1)
