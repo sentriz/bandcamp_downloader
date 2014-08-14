@@ -25,11 +25,11 @@ Third party modules
 
 ### included ###
 
-* [wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*) (downloading files).
+* [wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*) (simple file downloading).
 
-* jsobj (**(c)** *darkf*) (website parsing)
+* jsobj (**(c)** *darkf*) (JavaScript/ECMAScript object literal reading)
 
-* [slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*) (required by jsobj).
+* [slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*) (JavaScript minifier).
 
 * [colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*) (CLI colours).
 
