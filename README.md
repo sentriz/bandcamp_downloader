@@ -64,9 +64,9 @@ Examples
 FAQ
 -----
 
-* *Download has stopped at x%, help?*
+* *Download has frozen at x%, what do?*
 
-    Send your shell a KeyboardInterrupt. ^C, ^Z, ect.
+    Send your shell a KeyboardInterrupt (^C, ^Z, ect..). This will resume the download.
 
 * *Will this software work on any OS?*
 
