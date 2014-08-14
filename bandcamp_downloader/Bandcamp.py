@@ -2,8 +2,8 @@ from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import error
 from urllib.error import URLError, HTTPError
 from urllib.request import Request, urlopen
-import lib.jsobj
-import lib.wgetter
+import lib.utilities.jsobj as jsobj
+import lib.utilities.wgetter as wgetter
 import mutagen.mp3, mutagen.id3
 import os
 import sys
@@ -74,7 +74,7 @@ def download(url, get_art, exclude): #{
     show_status("stripping page")
     data = data.split("var TralbumData = {\n")[-1]
     data = data[0:data.index("};")]
-    data = lib.jsobj.read_js_object("var _ = {" + data + "};")
+    data = jsobj.read_js_object("var _ = {" + data + "};")
     show_status(status = "%green%done")
 
     show_status("sorting data")
@@ -104,7 +104,7 @@ def download(url, get_art, exclude): #{
         print()
         if track_num not in exclude:
             show_status("%green%downloading %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
-            raw_file = lib.wgetter.download(url)
+            raw_file = wgetter.download(url)
             new_file = "{}. {}.mp3".format(track_num, title)
             os.rename(raw_file, new_file)
             write_tags(new_file, track_num)
@@ -115,7 +115,7 @@ def download(url, get_art, exclude): #{
     if get_art:
         try:
             show_status("%green%downloading %reset%artwork", once_off=True)
-            raw_file = lib.wgetter.download(album_meta["art_url"])
+            raw_file = wgetter.download(album_meta["art_url"])
             os.rename(raw_file, "front.jpg")
         except (FileNotFoundError, FileExistsError):
             show_status("%red%failed %reset%to download (or rename) artwork", once_off=True)
