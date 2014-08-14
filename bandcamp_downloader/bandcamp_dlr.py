@@ -73,7 +73,8 @@ if __name__ == "__main__":
         
     # "%album% - %title%"
     album_name = "{} - {}".format(
-        *url.replace("http://", "").replace(".bandcamp.com/album/", "|").split("|")
+        *url.replace("https://", "").replace("http://", "") \
+            .replace(".bandcamp.com/album/", "|").split("|")
     )
     
     # make and change directories
