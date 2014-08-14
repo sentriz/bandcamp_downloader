@@ -112,6 +112,9 @@ def download(url, get_art, exclude): #{
             os.rename(raw_file, "front.jpg")
         except (FileNotFoundError, FileExistsError):
             show_status("%red%failed %reset%to download (or rename) artwork", once_off=True)
+        finally:
+            os.path.isfile(raw_file):
+                os.remove(raw_file)
     else:
         show_status("%yellow%skipping %reset%artwork", once_off=True)
 #}
