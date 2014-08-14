@@ -13,7 +13,6 @@ def download(url, get_art, exclude): #{
         * not using EasyID3 because download() downloads files with no tags.
         """
         
-        # aesthetics
         print()
         show_status("writing id3 tags for file \"{}\"".format(filename), once_off=True)
         
@@ -33,7 +32,7 @@ def download(url, get_art, exclude): #{
         for tag, tuple in tags.items():
             value, name = tuple
             track[tag] = getattr(mutagen.id3, tag)(encoding = 3, text = [value])
-            print("{}: \"{}\"".format(name, value))
+            print("- {}: \"{}\"".format(name, value))
         track.save()
 
     #}
@@ -95,20 +94,24 @@ def download(url, get_art, exclude): #{
 
     for track in album_meta["tracks"]:          
         track_num, title, url = track
+        print()
         if track_num not in exclude:
-            show_status("%green%downloading %reset%track #{} \"{}\" ".format(track_num, title), once_off = True)
+            show_status("%green%downloading %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
             raw_file = wgetter.download(url)
             new_file = "{}. {}.mp3".format(track_num, title)
             os.rename(raw_file, new_file)
             write_tags(new_file, track_num)
         else:
-            show_status("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off = True)
+            show_status("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
             
+    print()
     if get_art:
         try:
+            show_status("%green%downloading %reset%artwork", once_off=True)
             raw_file = wgetter.download(album_meta["art_url"])
             os.rename(raw_file, "front.jpg")
-            show_status("downloading artwork %green%done", once_off = True)
         except (FileNotFoundError, FileExistsError):
-            show_status("downloading artwork %red%failed", once_off = True)
+            show_status("%red%failed %reset%to download (or rename) artwork", once_off=True)
+    else:
+        show_status("%yellow%skipping %reset%artwork", once_off=True)
 #}
