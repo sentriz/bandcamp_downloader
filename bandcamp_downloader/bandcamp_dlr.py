@@ -44,7 +44,7 @@ if __name__ == "__main__":
         show_status(status = "%red%please provide a folder")
         error()
         
-    if args['--artist'] and args['--album']:
+    if args['--artist'] or args['--album']:
         show_status(status = "%yellow%artist/album found")
         artist, album = args['--artist'], args['--album']
         url = "http://{}.bandcamp.com/album/{}".format(artist, album)
@@ -65,7 +65,7 @@ if __name__ == "__main__":
         if get_art else "no"), once_off=True)
     show_status("  - exclude: %yellow%" + ("none" \
         if not exclude_list else str(exclude_list)), once_off=True)
-    show_status("  - folder: %yellow%" + args["--folder"], once_off=True)
+    show_status("  - folder: %yellow%" + folder, once_off=True)
         
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
         
