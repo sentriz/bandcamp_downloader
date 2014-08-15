@@ -25,12 +25,12 @@ def read_js_object(code):
         elif isinstance(node, ast.VarDecl):
             return (visit(node.identifier), visit(node.initializer))
         elif isinstance(node, ast.Object):
-            d = {}
+            dict = {}
             for property in node:
                 key = visit(property.left)
                 value = visit(property.right)
-                d[key] = value
-            return d
+                dict[key] = value
+            return dict
         elif isinstance(node, ast.BinOp):
             # simple constant folding
             if node.op == '+':
@@ -46,9 +46,8 @@ def read_js_object(code):
             return node.value.strip('"').strip("'")
         elif isinstance(node, ast.Array):
             return [visit(x) for x in node]
-        # elif isinstance(node, ast.Number) or isinstance(node, ast.Identifier) or isinstance(node, ast.Boolean) or isinstance(node, ast.Null):
-        #elif any([isinstance(node, getattr(ast, type)) for type in ["Number", "Identifier", "Boolean", "Null"]]):
-        #    return node.value
+        elif any([isinstance(node, getattr(ast, type)) for type in ["Number", "Identifier", "Boolean", "Null"]])
+            return node.value
         else:
             raise Exception("Unhandled node: {}".format(node))
             
