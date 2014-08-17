@@ -2,14 +2,16 @@
 Usage:
   bandcamp_dlr.py (<url> | --artist <name> --album <name>)
                   [--save-art | --embed] [--folder <name>] [--exclude <list>]
+                  [--splash] [--help] [--version]
 
 Options:
+  --embed-art      Embed album artwork
+  --exclude <list> List of tracks to exclude from download. (seperated by ",")
+  --folder <name>  Name of download folder [default: downloads]
+  --save-art       Download album artwork
+  --splash         Show a splash screen on startup
   -h, --help       Show this screen
   -v, --version    Show version
-  --save-art       Download album artwork
-  --embed-art      Embed album artwork
-  --folder <name>  Name of download folder [default: downloads]
-  --exclude <list> List of tracks to exclude from download. (seperated by ",")
 
 Examples:
   bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --save-art
@@ -18,14 +20,29 @@ Examples:
 """
 
 from docopt import docopt
-from lib.utilities.aesthetics import show_status, colour
-from lib.utilities.functions import url_is_valid, mk_cd, error, yes_or_no
+from lib.utilities.aesthetics import colour
+from lib.utilities.aesthetics import get_console_width
+from lib.utilities.aesthetics import show_status
+from lib.utilities.functions import error
+from lib.utilities.functions import mk_cd
+from lib.utilities.functions import url_is_valid
+from lib.utilities.functions import yes_or_no
 import Bandcamp
+import os
 import sys
 
-if __name__ == "__main__":
+if __name__ != "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr v1.1")
     #print(args)
+    
+    if args["--splash"]:
+        file = os.path.join(os.getcwd(), os.path.join("lib", "splash.txt"))
+        padding = " "*int((get_console_width()-70)/2)
+        with open(file, "r") as splash:
+            for line in splash:
+                print(padding + line.replace("\n", "") + padding, end = "")
+                
+    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
 
     show_status("parsing arguments")
     
@@ -99,15 +116,18 @@ if __name__ == "__main__":
     else:
         sys.exit()
 else:
-    print("""wrong module""")
-    print("""import Bandcamp and run:""")
-    print()
-    print(""">>> album = Bandcamp.Album(""")
-    print("""...     url = "http://ARTIST.bandcamp.com/album/ALBUM/",""")
-    print("""...     save_or_embed = "save", # for artwork, this save it. use "embed" to embed it.""")
-    print("""...     exclude = []            # or [1, 2], for example to exclude tracks 1 and 2.""")
-    print("""... )""")
-    print(""">>> """)
+    message = """\
+wrong module
+import Bandcamp and run:\n
+>>> album = Bandcamp.Album(
+...     url = "http://ARTIST.bandcamp.com/album/ALBUM",
+...     save_or_embed = "save", # for artwork, this save it. use "embed" to embed it.
+...     exclude = []            # or [1, 2], for example to exclude tracks 1 and 2.
+... )
+>>> album.download()
+>>>
+"""
+    print(message)
      
     
     

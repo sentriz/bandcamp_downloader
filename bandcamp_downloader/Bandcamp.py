@@ -1,11 +1,15 @@
-from lib.utilities.aesthetics import show_status, colour
-from lib.utilities.debugging import debugmethods, debug
+from lib.utilities.aesthetics import colour
+from lib.utilities.aesthetics import show_status
+from lib.utilities.debugging import debugmethods
 from lib.utilities.functions import error
-from urllib.error import URLError, HTTPError
-from urllib.request import Request, urlopen
+from urllib.error import HTTPError
+from urllib.error import URLError
+from urllib.request import Request
+from urllib.request import urlopen
 import lib.utilities.jsobj as jsobj
 import lib.utilities.wgetter as wgetter
-import mutagen.mp3, mutagen.id3
+import mutagen.id3
+import mutagen.mp3
 import os
 import sys
 
