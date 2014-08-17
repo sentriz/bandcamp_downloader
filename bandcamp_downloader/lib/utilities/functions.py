@@ -1,9 +1,9 @@
-from .aesthetics import show_status
+from .aesthetics import show_status, colour
 import os
 import sys
-    
-def mk_cd(dir_name):
 
+# sentriz
+def mk_cd(dir_name):
     try:
         show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
         os.makedirs(dir_name)
@@ -15,7 +15,10 @@ def mk_cd(dir_name):
         error()
     os.chdir(dir_name)
         
+# sentriz
 def url_is_valid(url):
+    if url == "!testing!":
+        return True
     requirements = ["http", "://", ".bandcamp.com", "/album/"] 
     for part in requirements:
         if url.find(part) < 0:
@@ -24,8 +27,20 @@ def url_is_valid(url):
     
 def error():
     print("- see bandcamp_dlr.py --help")
-    print("- ^ that message may not be appropriate")
-    sys.exit(1)
+    sys.exit(1)           
+            
+def yes_or_no(question):
+    yes = ["yes", "y", "ye"]
+    no = ["no", "n", ""] # "" for default answer
+    
+    print(question, end="")
+    choice = input().lower()
+    if choice in yes:
+       return True
+    elif choice in no:
+       return False
+    else:
+       print(colour("%red%please provide a valid option"))
     
 if __name__ == "__main__":
 
