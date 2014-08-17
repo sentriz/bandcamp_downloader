@@ -1,4 +1,5 @@
 from lib.utilities.aesthetics import show_status, colour
+from lib.utilities.debugging import debugmethods, debug
 from lib.utilities.functions import error
 from urllib.error import URLError, HTTPError
 from urllib.request import Request, urlopen
@@ -8,6 +9,7 @@ import mutagen.mp3, mutagen.id3
 import os
 import sys
 
+@debugmethods
 class Album:
 
     def __init__(self, url, save_or_embed, exclude):
@@ -108,10 +110,11 @@ class Album:
                 os.remove(raw_file)
                 
     def _embed_art(self):
+        show_status("%dim%downloading temporary artwork to embed", once_off = True)
         raw_file = wgetter.download(self.art_url)
         
         all_tracks = [file for file in os.listdir() if \
-            os.path.splitext(file)[1][1:] == ".mp3"]
+            os.path.splitext(file)[1] == ".mp3"]
         for track in all_tracks:
             muta_track = mutagen.mp3.MP3(track)
             muta_track["APIC:Cover"] = mutagen.id3.APIC(
@@ -122,14 +125,20 @@ class Album:
                 data = open(raw_file, "rb").read()
             )
             muta_track.save()
+            show_status("%dim%embeded artowork for track \"{}\"".format(track), once_off = True)
             
         os.remove(raw_file)
          
     # start
     def download(self):
+        show_status(" >> starting >>", once_off = True)
         self._download_tracks()
         if self.config["save_or_embed"] == "save":
             self._download_art()
         elif self.config["save_or_embed"] == "embed":
             self._embed_art()
+        show_status(" << done <<", once_off = True)
 #}
+
+class Track:
+    pass
