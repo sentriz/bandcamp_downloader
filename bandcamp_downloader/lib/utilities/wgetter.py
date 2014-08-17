@@ -278,8 +278,8 @@ def download(link, outdir='.', chunk_size=4096):
             fh.write(chunk)
             reporthook(bytes_so_far, chunk_size, total_size, speed)
     except KeyboardInterrupt:
-        print('\n\nCtrl + C: Download aborted by user')
-        print('Partial downloaded file:\n{0}'.format(os.path.abspath(tmpfile)))
+        print('\n> KeyboardInterrupt: download aborted by user')
+        print('- partial downloaded file: {0}'.format(os.path.abspath(tmpfile)))
         sys.exit(1)
     finally:
         if url:

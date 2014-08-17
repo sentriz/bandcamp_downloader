@@ -94,9 +94,20 @@ if __name__ == "__main__":
         mk_cd(folder)
         mk_cd("{} - {}".format(album.artist, album.title))
         
+        
         album.download()
     else:
         sys.exit()
+else:
+    print("""wrong module""")
+    print("""import Bandcamp and run:""")
+    print()
+    print(""">>> album = Bandcamp.Album(""")
+    print("""...     url = "http://ARTIST.bandcamp.com/album/ALBUM/",""")
+    print("""...     save_or_embed = "save", # for artwork, this save it. use "embed" to embed it.""")
+    print("""...     exclude = []            # or [1, 2], for example to exclude tracks 1 and 2.""")
+    print("""... )""")
+    print(""">>> """)
      
     
     
