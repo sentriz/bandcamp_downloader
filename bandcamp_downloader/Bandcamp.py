@@ -16,15 +16,17 @@ import sys
 @debugmethods
 class Album:
 
-    def __init__(self, url, save_or_embed, exclude):
+    def __init__(self, url, save_or_embed, exclude, download_folder_name):
         self.config = {
             "url": url,
             "save_or_embed": save_or_embed,
-            "exclude": exclude
+            "exclude": exclude,
+            "download_folder_name": download_folder_name
         }
         
         data = self._get_data()
         show_status("sorting data")
+        
         self.album_artist = data["_"]["artist"]
         self.art_url = data["_"]["artFullsizeUrl"]
         self.artist = data["_"]["artist"]
@@ -34,21 +36,28 @@ class Album:
         self.year = data["_"]["album_release_date"].split(" ")[2]
         
         for track in data["_"]["trackinfo"]:
-            self.tracks.append(
-                (int(track["track_num"]), track["title"], track["file"]["mp3-128"])
-            )
+            self.tracks.append({
+                "track_num": int(track["track_num"]), 
+                "title": track["title"],
+                "url": track["file"]["mp3-128"]
+            })
+            
         show_status(status = "%green%done")
         
     def _write_tags(self, filename, track_num):
+        """
+        > write ID3 tags to .mp3 files.
+        * 
+        """
         show_status("writing id3 tags for file \"{}\"".format(filename), once_off=True)
 
         tags = {
             # "KEY": (tag, "tag name")
             "TALB": (self.title, "album"),
-            "TIT2": (self.tracks[track_num - 1][1], "title"),
+            "TIT2": (self.tracks[track_num]["title"], "title"),
             "TPE1": (self.artist, "artist"),
             "TPE2": (self.album_artist, "album artist"),
-            "TRCK": ("{}/{}".format(self.tracks[track_num - 1][0], 
+            "TRCK": ("{}/{}".format(self.tracks[track_num]["track_num"], 
                 self.total_tracks), "track no./total"),
             "TYER": (self.year, "year")
         }
@@ -92,13 +101,13 @@ class Album:
         
     def _download_tracks(self):
         for track in self.tracks:
-            track_num, title, url = track
             if track_num not in self.config["exclude"]:
-                show_status("%green%downloading %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
+                show_status("%green%downloading %reset%track #{} \"{}\" ".format(
+                    track["track_num"], track["title"]), once_off=True)
                 raw_file = wgetter.download(url)
-                new_file = "{}. {}.mp3".format(track_num, title)
+                new_file = "{}. {}.mp3".format(track["track_num"], track["title"])
                 os.rename(raw_file, new_file)
-                self._write_tags(new_file, track_num)
+                self._write_tags(new_file, track["track_num"] - 1)
             else:
                 show_status("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
 
@@ -132,17 +141,31 @@ class Album:
             show_status("%dim%embeded artowork for track \"{}\"".format(track), once_off = True)
             
         os.remove(raw_file)
+        
+    def _mk_cd(dir_name):
+        try:
+            show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
+            os.makedirs(dir_name)
+            show_status(status = "%green%done")
+        except FileExistsError:
+            show_status(status = "%yellow%already exists")
+        except (PermissionError, OSError):
+            show_status(status = "%red%failed")
+            error()
+        os.chdir(dir_name)
          
     # start
     def download(self):
-        show_status(" >> starting >>", once_off = True)
+    
+        # make and change directories
+        self._mk_cd(self.config["download_folder_name"])
+        self._mk_cd("{} - {}".format(self.artist, self.title))
+        
         self._download_tracks()
         if self.config["save_or_embed"] == "save":
             self._download_art()
         elif self.config["save_or_embed"] == "embed":
             self._embed_art()
-        show_status(" << done <<", once_off = True)
-#}
 
 class Track:
     pass
