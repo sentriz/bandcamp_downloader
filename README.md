@@ -19,19 +19,20 @@ Third party modules
 
 ### required ###
 
-* [mutagen](https://pypi.python.org/pypi/mutagen) (mp3 tagging).
+|name/link|use|
+|:--|:--|
+|[docopt](https://pypi.python.org/pypi/docopt)|argument parsing|
+|[mutagen](https://pypi.python.org/pypi/mutagen)|mp3 tagging|
 
-* [docopt](https://pypi.python.org/pypi/docopt) (argument parsing).
 
 ### included ###
 
-* [wgetter](https://pypi.python.org/pypi/wgetter) (**(c)** *phoemur*) (simple file downloading).
-
-* jsobj (**(c)** *darkf*) (JavaScript/ECMAScript object literal reading)
-
-* [slimit](https://pypi.python.org/pypi/slimit) (**(c)** *rspivak*) (JavaScript minifier).
-
-* [colorama](https://pypi.python.org/pypi/colorama) (**(c)** *tartley*) (CLI colours).
+|name/link|use|author|
+|:--|:--|--:|
+|[wgetter](https://pypi.python.org/pypi/wgetter)|simple file downloading|(c) *phoemur*|
+|[jsobj](https://github.com/darkf/py-js-object-parser)|JavaScript object literal reading|(c) *darkf*|
+|[slimit](https://pypi.python.org/pypi/slimit)|JavaScript minifier|(c) *rspivak*|
+|[colorama](https://pypi.python.org/pypi/colorama)|CLI colours|(c) *tartley*|
 
 --
 
