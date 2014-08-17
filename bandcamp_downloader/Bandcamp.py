@@ -52,14 +52,6 @@ class Album:
             value, name = tuple
             track[tag] = getattr(mutagen.id3, tag)(encoding=3, text=value)
             print("- {}: \"{}\"".format(name, value))
-        if save_or_embed = "embed":
-            track["APIC:Cover"] = mutagen.id3.APIC(
-                encoding = 3,
-                mime = "image/jpeg",
-                type = 3,
-                desc = "Cover",
-                data = open("front.jpg", "rb").read()
-            print("- artwork embedded")
         track.save()
         
     def _get_data(self, user_agent=None): #{
@@ -102,6 +94,7 @@ class Album:
                 new_file = "{}. {}.mp3".format(track_num, title)
                 os.rename(raw_file, new_file)
                 self._write_tags(new_file, track_num)
+                info_for_embeding.append((new_file, track_num))
             else:
                 ##show_status#("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
                 pass
@@ -117,14 +110,32 @@ class Album:
         finally:              
             if os.path.isfile(raw_file):
                 os.remove(raw_file)
-
+                
+    def _embed_art(self):
+        self._download_art()
+        
+        all_tracks = [file for file in os.listdir() if \
+            os.path.splitext(file)[1][1:] == ".mp3"]:
+        for track in all_tracks:
+            muta_track = mutagen.mp3.MP3(track)
+            muta_track["APIC:Cover"] = mutagen.id3.APIC(
+                encoding = 3,
+                mime = "image/jpeg",
+                type = 3,
+                desc = "Cover",
+                data = open("front.jpg", "rb").read()
+            muta_track.save()
             
+        try:
+            os.remove("front.jpg")
+        except FileNotFoundError:
+            pass
+         
     # start
     def download(self):
         self._download_tracks()
         if save_or_embed == "save"
             self._download_art()
         elif save_or_embed == "embed":
-            self._download_art()
-            pass
+            self._embed_art()
 #}
