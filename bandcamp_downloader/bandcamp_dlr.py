@@ -59,7 +59,7 @@ if __name__ == "__main__":
             
     if args["--save-art"]:
         save_or_embed = "save"
-    elif args["--embed"]
+    elif args["--embed"]:
         save_or_embed = "embed"
     else:
         save_or_embed = None
@@ -78,12 +78,15 @@ if __name__ == "__main__":
     # create class
     album = Bandcamp.Album(
         url = url, 
-        save_or_embed = save_or_embed
+        save_or_embed = save_or_embed,
         exclude = exclude
     )
     
-    prompt = "%yellow%do you want to download \"%dim%{}%bright%\" by " \
-        "%dim%{}%bright%? %dim%[y/N] %bright%> ".format(album.artist, album.title)
+    prompt = "%yellow%%dim%sure you want to download \"%bright%{title}%dim%\" by " \
+        "%bright%{artist}%dim%? %bright%[y/N] %dim%> ".format(
+            title = album.title,
+            artist = album.artist
+        )
         
     if yes_or_no(colour(prompt)):
         
@@ -91,7 +94,7 @@ if __name__ == "__main__":
         mk_cd(folder)
         mk_cd("{} - {}".format(album.artist, album.title))
         
-        #album.download()
+        album.download()
     else:
         sys.exit()
      
