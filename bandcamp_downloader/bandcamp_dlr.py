@@ -21,23 +21,23 @@ Examples:
 
 from docopt import docopt
 from lib.utilities.aesthetics import colour
-from lib.utilities.aesthetics import get_console_width
 from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import error
 from lib.utilities.functions import mk_cd
 from lib.utilities.functions import url_is_valid
 from lib.utilities.functions import yes_or_no
+from shutil import get_terminal_size
 import Bandcamp
 import os
 import sys
 
-if __name__ != "__main__":
+if __name__ == "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr v1.1")
     #print(args)
     
     if args["--splash"]:
         file = os.path.join(os.getcwd(), os.path.join("lib", "splash.txt"))
-        padding = " "*int((get_console_width()-70)/2)
+        padding = " "*int((get_terminal_size()[0]-70)/2)
         with open(file, "r") as splash:
             for line in splash:
                 print(padding + line.replace("\n", "") + padding, end = "")
@@ -56,7 +56,7 @@ if __name__ != "__main__":
         exclude = []
         
     if args["--folder"]:
-        folder = args["--folder"].strip()
+        download_folder_name = args["--folder"].strip()
     else:
         show_status(status = "%red%please provide a folder")
         error()
@@ -96,7 +96,8 @@ if __name__ != "__main__":
     album = Bandcamp.Album(
         url = url, 
         save_or_embed = save_or_embed,
-        exclude = exclude
+        exclude = exclude,
+        download_folder_name = download_folder_name
     )
     
     prompt = "%yellow%%dim%sure you want to download \"%bright%{title}%dim%\" by " \
@@ -107,11 +108,7 @@ if __name__ != "__main__":
         
     if yes_or_no(colour(prompt)):
         
-        # make and change directories
-        mk_cd(folder)
-        mk_cd("{} - {}".format(album.artist, album.title))
-        
-        
+        # start
         album.download()
     else:
         sys.exit()
