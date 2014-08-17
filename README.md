@@ -23,6 +23,7 @@ Third party modules
 |:--|:--|
 |[docopt](https://pypi.python.org/pypi/docopt)|argument parsing|
 |[mutagen](https://pypi.python.org/pypi/mutagen)|mp3 tagging|
+|[slimit](https://pypi.python.org/pypi/slimit)|JavaScript minifier|
 
 
 ### included ###
@@ -31,7 +32,6 @@ Third party modules
 |:--|:--|--:|
 |[wgetter](https://pypi.python.org/pypi/wgetter)|simple file downloading|(c) *phoemur*|
 |[jsobj](https://github.com/darkf/py-js-object-parser)|JavaScript object literal reading|(c) *darkf*|
-|[slimit](https://pypi.python.org/pypi/slimit)|JavaScript minifier|(c) *rspivak*|
 |[colorama](https://pypi.python.org/pypi/colorama)|CLI colours|(c) *tartley*|
 
 --
