@@ -1,0 +1,2 @@
+- add extra requirement to README.md from requirements.txt
+- add tables for 3rd party modules

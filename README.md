@@ -3,7 +3,7 @@
 
 bandcamp_dlr is a python **3+** script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
 
-You must supply the script either the full Bandcamp album URL, or an artist and an album name - these must be exactly how you see them in the album url..
+You must supply the script and artist, and an album name. These must be exactly how you see them in the album url.
 
 http://**artist**.bandcamp.com/album/**album-name**/
 
@@ -58,15 +58,15 @@ Examples
 -----
 
     bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --get-art
-    bandcamp_dlr.py --artist "the-doors" --album "la-woman" --folder="My Music"
-    bandcamp_dlr.py --artist "pinkfloyd" --album "dsotm" --exclude "3, 5, 7"
+    bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
+    bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3, 5, 7"
 
 FAQ
 -----
 
-* *Download has frozen at x%, what do?*
+* *Download has stopped at x%, help?*
 
-    Send your shell a KeyboardInterrupt (^C, ^Z, ect..). This will resume the download.
+    Send your shell a KeyboardInterrupt. ^C, ^Z, ect.
 
 * *Will this software work on any OS?*
 
