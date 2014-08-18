@@ -1,4 +1,4 @@
-- add extra requirement to README.md from requirements.txt
-    - add tables for 3rd party modules
-	- clean
-- add --discography option to download an artist's full discography
+//  - add extra requirement to README.md from requirements.txt
+//      - add tables for 3rd party modules
+//      - clean
+    - add --discography option to download an artist's full discography
