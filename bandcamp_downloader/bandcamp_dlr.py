@@ -88,7 +88,7 @@ if __name__ == "__main__":
         if save_or_embed in ["save", "embed"] else "no"), once_off=True)
     show_status("  - exclude: %yellow%" + ("none" \
         if not exclude else str(exclude)), once_off=True)
-    show_status("  - folder: %yellow%" + args["--folder"], once_off=True)
+    show_status("  - folder: %yellow%" + download_folder_name, once_off=True)
         
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
     
@@ -107,7 +107,6 @@ if __name__ == "__main__":
         )
         
     if yes_or_no(colour(prompt)):
-        
         # start
         album.download()
     else:
