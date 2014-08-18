@@ -23,7 +23,6 @@ from docopt import docopt
 from lib.utilities.aesthetics import colour
 from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import error
-from lib.utilities.functions import mk_cd
 from lib.utilities.functions import url_is_valid
 from lib.utilities.functions import yes_or_no
 from shutil import get_terminal_size
