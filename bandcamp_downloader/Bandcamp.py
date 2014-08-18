@@ -13,7 +13,7 @@ import mutagen.mp3
 import os
 import sys
 
-@debugmethods
+#@debugmethods
 class Album:
 
     def __init__(self, url, save_or_embed, exclude, download_folder_name):
@@ -101,15 +101,17 @@ class Album:
         
     def _download_tracks(self):
         for track in self.tracks:
-            if track_num not in self.config["exclude"]:
+            if track["track_num"] not in self.config["exclude"]:
                 show_status("%green%downloading %reset%track #{} \"{}\" ".format(
                     track["track_num"], track["title"]), once_off=True)
-                raw_file = wgetter.download(url)
+                raw_file = wgetter.download(track["url"])
                 new_file = "{}. {}.mp3".format(track["track_num"], track["title"])
                 os.rename(raw_file, new_file)
                 self._write_tags(new_file, track["track_num"] - 1)
             else:
-                show_status("%red%skipping %reset%track #{} \"{}\" ".format(track_num, title), once_off=True)
+                show_status("%red%skipping %reset%track #{} \"{}\" ".format(
+                    track["track_num"], track["title"]), once_off=True
+                )
 
     def _download_art(self):
         try:
@@ -139,10 +141,13 @@ class Album:
             )
             muta_track.save()
             show_status("%dim%embeded artowork for track \"{}\"".format(track), once_off = True)
-            
-        os.remove(raw_file)
+        try:
+            os.remove(raw_file)
+            show_status("%dim%deleted temporary artwork", once_off = True)
+        except (PermissionError, OSError):
+            show_status("%dim%%red%failed %reset%to delete temporary art file " + raw_file)
         
-    def _mk_cd(dir_name):
+    def _mk_cd(self, dir_name):
         try:
             show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
             os.makedirs(dir_name)
@@ -156,7 +161,6 @@ class Album:
          
     # start
     def download(self):
-    
         # make and change directories
         self._mk_cd(self.config["download_folder_name"])
         self._mk_cd("{} - {}".format(self.artist, self.title))
