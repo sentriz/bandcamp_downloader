@@ -43,17 +43,20 @@ Please note, you can download the required modules in one step with:
 Usage
 -----
 
-    bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
-                    [--get-art] [--folder=<name>] [--exclude=<list>]
+    bandcamp_dlr.py (<url> | --artist <name> --album <name>)
+                    [--save-art | --embed-art] [--folder <name>] [--exclude <list>]
+                    [--splash] [--help] [--version]
 
 Options
 -----
 
-    -h, --help       Show this screen.
-    -v, --version    Show version.
-    --get-art        Download album artwork.
-    --folder=<name>  Name of download folder [default: downloads].
-    --exclude=<list> List of tracks to exclude from download. (seperated by ",")
+    --embed-art      Embed album artwork
+    --exclude <list> List of tracks to exclude from download. (seperated by ",")
+    --folder <name>  Name of download folder [default: downloads]
+    --save-art       Download album artwork
+    --splash         Show a splash screen on startup
+    -h, --help       Show this screen
+    -v, --version    Show version
 
 Examples
 -----

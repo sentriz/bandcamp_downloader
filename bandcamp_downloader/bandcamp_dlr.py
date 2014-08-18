@@ -1,7 +1,7 @@
 """
 Usage:
   bandcamp_dlr.py (<url> | --artist <name> --album <name>)
-                  [--save-art | --embed] [--folder <name>] [--exclude <list>]
+                  [--save-art | --embed-art] [--folder <name>] [--exclude <list>]
                   [--splash] [--help] [--version]
 
 Options:
@@ -34,18 +34,18 @@ import sys
 if __name__ == "__main__":
     args = docopt(__doc__, version = "bandcamp_dlr v1.1")
     #print(args)
-    
+
     if args["--splash"]:
         file = os.path.join(os.getcwd(), os.path.join("lib", "splash.txt"))
         padding = " "*int((get_terminal_size()[0]-70)/2)
         with open(file, "r") as splash:
             for line in splash:
                 print(padding + line.replace("\n", "") + padding, end = "")
-                
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
+
+    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
 
     show_status("parsing arguments")
-    
+
     if args["--exclude"]:
         try:
             exclude = [int(n) for n in args["--exclude"].replace(" ", "").split(",")]
@@ -54,13 +54,13 @@ if __name__ == "__main__":
             error()
     else:
         exclude = []
-        
+
     if args["--folder"]:
         download_folder_name = args["--folder"].strip()
     else:
         show_status(status = "%red%please provide a folder")
         error()
-        
+
     if args['--artist'] and args['--album']:
         show_status(status = "%yellow%artist/album found")
         url = "http://{}.bandcamp.com/album/{}".format(
@@ -73,59 +73,41 @@ if __name__ == "__main__":
         else:
             show_status(status = "%red%invalid URL")
             error()
-            
+
     if args["--save-art"]:
         save_or_embed = "save"
-    elif args["--embed"]:
+    elif args["--embed-art"]:
         save_or_embed = "embed"
     else:
         save_or_embed = None
-        
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
-    
+
+    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
+
     show_status("config: ", once_off=True)
     show_status("  - get artwork: %yellow%" + (save_or_embed \
         if save_or_embed in ["save", "embed"] else "no"), once_off=True)
     show_status("  - exclude: %yellow%" + ("none" \
         if not exclude else str(exclude)), once_off=True)
     show_status("  - folder: %yellow%" + download_folder_name, once_off=True)
-        
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . # 
-    
+
+    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
+
     # create class
     album = Bandcamp.Album(
-        url = url, 
+        url = url,
         save_or_embed = save_or_embed,
         exclude = exclude,
         download_folder_name = download_folder_name
     )
-    
+
     prompt = "%yellow%%dim%sure you want to download \"%bright%{title}%dim%\" by " \
         "%bright%{artist}%dim%? %bright%[y/N] %dim%> ".format(
             title = album.title,
             artist = album.artist
         )
-        
+
     if yes_or_no(colour(prompt)):
         # start
         album.download()
     else:
         sys.exit()
-else:
-    message = """\
-wrong module
-import Bandcamp and run:\n
->>> album = Bandcamp.Album(
-...     url = "http://ARTIST.bandcamp.com/album/ALBUM",
-...     save_or_embed = "save", # for artwork, this save it. use "embed" to embed it.
-...     exclude = []            # or [1, 2], for example to exclude tracks 1 and 2.
-... )
->>> album.download()
->>>
-"""
-    print(message)
-     
-    
-    
-        
-    
