@@ -1,19 +1,6 @@
 from .aesthetics import show_status, colour
 import os
 import sys
-
-# sentriz
-def mk_cd(dir_name):
-    try:
-        show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
-        os.makedirs(dir_name)
-        show_status(status = "%green%done")
-    except FileExistsError:
-        show_status(status = "%yellow%already exists")
-    except (PermissionError, OSError):
-        show_status(status = "%red%failed")
-        error()
-    os.chdir(dir_name)
         
 # sentriz
 def url_is_valid(url):
