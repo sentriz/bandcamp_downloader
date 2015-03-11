@@ -63,7 +63,7 @@ Examples
     bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
     bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3, 5, 7"
     
-API
+API Examples
 -----
 
 1. (tested on python 3.4)
