@@ -1,10 +1,8 @@
 
 ![!](.logo.png)
 
-bandcamp_dlr is a python **3+** script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
-
-You must supply the script and artist, and an album name. These must be exactly how you see them in the album url.
-
+bandcamp_dlr is a python **3+** script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).  
+You must supply the script and artist, and an album name. These must be exactly how you see them in the album url.  
 http://**artist**.bandcamp.com/album/**album-name**/
 
 Installation
@@ -85,22 +83,17 @@ API
 FAQ
 -----
 
-* *Download has stopped at x%, help?*
-
+* *Download has stopped at x%, help?*  
     Send your shell a KeyboardInterrupt. ^C, ^Z, ect.
 
-* *Will this software work on any OS?*
-
+* *Will this software work on any OS?*  
     It has only been tested on a Windows machine (so far), but it has been developed in a way that should make it cross-platform. (but not cross-pyversion)
 
 Terms of service/use
 -----
 
-By using the script above, you acknowledge and agree to the following terms of service/use:
-
+By using the script above, you acknowledge and agree to the following terms of service/use:  
 1.   Do not use this script to download copyrighted audio.
-2.   High quality audio is not guaranteed; the script uses audio provided by Bandcamp.
-
-Piracy: I do not condone piracy in any form. My goal that this tool be used to obtain legal audio that would otherwise be extremely difficult to find. Bandcamp is a good source for these audio clips and allows new artists to showcase their work and earn a rightful income from it.
-
+2.   High quality audio is not guaranteed; the script uses audio provided by [Bandcamp](http://bandcamp.com/).  
+Piracy: I do not condone piracy in any form. My goal that this tool be used to obtain legal audio that would otherwise be extremely difficult to find. Bandcamp is a good source for these audio clips and allows new artists to showcase their work and earn a rightful income from it.  
 To ensure the survival of this tool and to help the artists who are providing the music, please buy their singles/albums directly from Bandcamp.
