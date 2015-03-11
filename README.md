@@ -66,7 +66,7 @@ Examples
 API
 -----
 
-1. example 1
+1. (tested on python 3.4)
       ````python
     import Bandcamp
 
