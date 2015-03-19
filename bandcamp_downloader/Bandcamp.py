@@ -23,10 +23,10 @@ class Album:
             "exclude": exclude,
             "download_folder_name": download_folder_name
         }
-        
+
         data = self._get_data()
         show_status("sorting data")
-        
+
         self.album_artist = data["_"]["artist"]
         self.art_url = data["_"]["artFullsizeUrl"]
         self.artist = data["_"]["artist"]
@@ -34,20 +34,20 @@ class Album:
         self.total_tracks = len(data["_"]["trackinfo"])
         self.tracks = []
         self.year = data["_"]["album_release_date"].split(" ")[2]
-        
+
         for track in data["_"]["trackinfo"]:
             self.tracks.append({
-                "track_num": int(track["track_num"]), 
+                "track_num": int(track["track_num"]),
                 "title": track["title"],
                 "url": track["file"]["mp3-128"]
             })
-            
+
         show_status(status = "%green%done")
-        
+
     def _write_tags(self, filename, track_num):
         """
         > write ID3 tags to .mp3 files.
-        * 
+        *
         """
         pretty_print("writing id3 tags for file \"{}\"".format(filename))
 
@@ -57,7 +57,7 @@ class Album:
             "TIT2": (self.tracks[track_num]["title"], "title"),
             "TPE1": (self.artist, "artist"),
             "TPE2": (self.album_artist, "album artist"),
-            "TRCK": ("{}/{}".format(self.tracks[track_num]["track_num"], 
+            "TRCK": ("{}/{}".format(self.tracks[track_num]["track_num"],
                 self.total_tracks), "track no./total"),
             "TYER": (self.year, "year")
         }
@@ -68,7 +68,7 @@ class Album:
             track[tag] = getattr(mutagen.id3, tag)(encoding=3, text=value)
             print("- {}: \"{}\"".format(name, value))
         track.save()
-        
+
     def _get_data(self, user_agent=None): #{
         user_agent = user_agent or "Mozilla/5.0 (compatible; MSIE 9.0;" \
             " Windows NT 6.1; Win64; x64; Trident/5.0)"
@@ -90,15 +90,15 @@ class Album:
                 show_status(status = "%red%server couldn't fulfil the request." \
                     " code: \"{}\"".format(e.code))
             sys.exit(1)
-        
+
         data = data.decode(sys.stdout.encoding)
         show_status("stripping page")
         data = data.split("var TralbumData = {\n")[-1]
         data = data[0:data.index("};")]
         show_status(status = "%green%done")
-        
+
         return jsobj.read_js_object("var _ = {" + data + "};")
-        
+
     def _download_tracks(self):
         for track in self.tracks:
             if track["track_num"] not in self.config["exclude"]:
@@ -121,14 +121,14 @@ class Album:
             os.rename(raw_file, "front.jpg")
         except (FileNotFoundError, FileExistsError):
             pretty_print("%red%failed %reset%to download (or rename) artwork")
-        finally:              
+        finally:
             if os.path.isfile(raw_file):
                 os.remove(raw_file)
-                
+
     def _embed_art(self):
         pretty_print("%dim%downloading temporary artwork to embed")
         raw_file = wgetter.download(self.art_url)
-        
+
         all_tracks = [file for file in os.listdir() if \
             os.path.splitext(file)[1] == ".mp3"]
         for track in all_tracks:
@@ -147,7 +147,7 @@ class Album:
             pretty_print("%dim%deleted temporary artwork")
         except (PermissionError, OSError):
             show_status("%dim%%red%failed %reset%to delete temporary art file " + raw_file)
-        
+
     def _mk_cd(self, dir_name):
         try:
             show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
@@ -159,13 +159,13 @@ class Album:
             show_status(status = "%red%failed")
             sys.exit(1)
         os.chdir(dir_name)
-         
+
     # start
     def download(self):
         # make and change directories
         self._mk_cd(self.config["download_folder_name"])
         self._mk_cd("{} - {}".format(self.artist, self.title))
-        
+
         self._download_tracks()
         if self.config["save_or_embed"] == "save":
             self._download_art()
