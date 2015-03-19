@@ -25,21 +25,11 @@ from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import error
 from lib.utilities.functions import url_is_valid
 from lib.utilities.functions import yes_or_no
-from shutil import get_terminal_size
 import Bandcamp
-import os
 import sys
 
 if __name__ == "__main__":
-    args = docopt(__doc__, version = "bandcamp_dlr v1.1")
-    #print(args)
-
-    if args["--splash"]:
-        file = os.path.join(os.getcwd(), os.path.join("lib", "splash.txt"))
-        padding = " "*int((get_terminal_size()[0]-70)/2)
-        with open(file, "r") as splash:
-            for line in splash:
-                print(padding + line.replace("\n", "") + padding, end = "")
+    args = docopt(__doc__, version="bandcamp_dlr v1.3.2")
 
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
 
