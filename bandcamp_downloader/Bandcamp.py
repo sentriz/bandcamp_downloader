@@ -1,7 +1,7 @@
 from lib.utilities.aesthetics import colour
 from lib.utilities.aesthetics import show_status
+from lib.utilities.aesthetics import pretty_print
 from lib.utilities.debugging import debugmethods
-from lib.utilities.functions import error
 from urllib.error import HTTPError
 from urllib.error import URLError
 from urllib.request import Request
@@ -49,7 +49,7 @@ class Album:
         > write ID3 tags to .mp3 files.
         * 
         """
-        show_status("writing id3 tags for file \"{}\"".format(filename), once_off=True)
+        pretty_print("writing id3 tags for file \"{}\"".format(filename))
 
         tags = {
             # "KEY": (tag, "tag name")
@@ -89,7 +89,7 @@ class Album:
                 print("er")
                 show_status(status = "%red%server couldn't fulfil the request." \
                     " code: \"{}\"".format(e.code))
-            error()
+            sys.exit(1)
         
         data = data.decode(sys.stdout.encoding)
         show_status("stripping page")
@@ -102,30 +102,31 @@ class Album:
     def _download_tracks(self):
         for track in self.tracks:
             if track["track_num"] not in self.config["exclude"]:
-                show_status("%green%downloading %reset%track #{} \"{}\" ".format(
-                    track["track_num"], track["title"]), once_off=True)
+                pretty_print("%green%downloading %reset%track #{} \"{}\" ".format(
+                    track["track_num"], track["title"])
+                )
                 raw_file = wgetter.download(track["url"])
                 new_file = "{}. {}.mp3".format(track["track_num"], track["title"])
                 os.rename(raw_file, new_file)
                 self._write_tags(new_file, track["track_num"] - 1)
             else:
-                show_status("%red%skipping %reset%track #{} \"{}\" ".format(
-                    track["track_num"], track["title"]), once_off=True
+                pretty_print("%red%skipping %reset%track #{} \"{}\" ".format(
+                    track["track_num"], track["title"])
                 )
 
     def _download_art(self):
         try:
-            show_status("%green%downloading %reset%artwork", once_off=True)
+            pretty_print("%green%downloading %reset%artwork")
             raw_file = wgetter.download(self.art_url)
             os.rename(raw_file, "front.jpg")
         except (FileNotFoundError, FileExistsError):
-            show_status("%red%failed %reset%to download (or rename) artwork", once_off=True)
+            pretty_print("%red%failed %reset%to download (or rename) artwork")
         finally:              
             if os.path.isfile(raw_file):
                 os.remove(raw_file)
                 
     def _embed_art(self):
-        show_status("%dim%downloading temporary artwork to embed", once_off = True)
+        pretty_print("%dim%downloading temporary artwork to embed")
         raw_file = wgetter.download(self.art_url)
         
         all_tracks = [file for file in os.listdir() if \
@@ -140,10 +141,10 @@ class Album:
                 data = open(raw_file, "rb").read()
             )
             muta_track.save()
-            show_status("%dim%embeded artowork for track \"{}\"".format(track), once_off = True)
+            pretty_print("%dim%embeded artowork for track \"{}\"".format(track))
         try:
             os.remove(raw_file)
-            show_status("%dim%deleted temporary artwork", once_off = True)
+            pretty_print("%dim%deleted temporary artwork")
         except (PermissionError, OSError):
             show_status("%dim%%red%failed %reset%to delete temporary art file " + raw_file)
         
@@ -156,7 +157,7 @@ class Album:
             show_status(status = "%yellow%already exists")
         except (PermissionError, OSError):
             show_status(status = "%red%failed")
-            error()
+            sys.exit(1)
         os.chdir(dir_name)
          
     # start
@@ -172,4 +173,5 @@ class Album:
             self._embed_art()
 
 class Track:
+    # maybe later
     pass
