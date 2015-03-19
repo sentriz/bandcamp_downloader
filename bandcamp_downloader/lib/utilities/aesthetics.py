@@ -2,8 +2,8 @@ from ..colorama import Fore, Style, init
 import os
 
 """
-This module may be stupid, but I couldn't think of a better way of doing - 
-what I wanted to do.. Maybe I'll think of it later. - sentriz
+this module may be stupid, but I couldn't think of a better way of doing - 
+what I wanted to do.. maybe I'll think of it later. 
 """
 
 init(autoreset = True)
@@ -19,18 +19,18 @@ def colour(string):
         string = string.replace(alias, esc)
     return string
     
-def show_status(message = "", status = "", once_off = False):
-    global last_message
+def pretty_print(message):
+    print(colour("%dim%> %bright%" + message))
     
-    if not once_off:
-        print(colour("%dim%> %bright%" + message + "... "), end = "")
-        if last_message:
-            print(colour("\r%dim%> %bright%" + last_message + "... " + status + " "*5))
-            last_message = None
-        else:
-            last_message = message
+def show_status(message = "", status = ""):
+    global last_message
+
+    print(colour("%dim%> %bright%" + message + "... "), end = "")
+    if last_message:
+        print(colour("\r%dim%> %bright%" + last_message + "... " + status + " "*5))
+        last_message = None
     else:
-        print(colour("%dim%> %bright%" + message))
+        last_message = message
         
 # testing
 if __name__ == "__main__":
