@@ -45,9 +45,9 @@ if __name__ == "__main__":
     show_status(status = "%red%failed")
   
     time.sleep(.1)
-    show_status("doing weird thing", once_off=True)
+    pretty_print("doing weird thing")
     time.sleep(.1)
-    show_status("doing weird thing again", once_off=True)
+    pretty_print("doing weird thing again")
     time.sleep(.1)
     show_status("doing something else, will faileds")
     time.sleep(.1)
