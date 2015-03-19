@@ -21,12 +21,16 @@ Examples:
 
 from docopt import docopt
 from lib.utilities.aesthetics import colour
+from lib.utilities.aesthetics import pretty_print
 from lib.utilities.aesthetics import show_status
-from lib.utilities.functions import error
 from lib.utilities.functions import url_is_valid
 from lib.utilities.functions import yes_or_no
 import Bandcamp
 import sys
+
+def error():
+    print("- see bandcamp_dlr.py --help")
+    sys.exit(1)
 
 if __name__ == "__main__":
     args = docopt(__doc__, version="bandcamp_dlr v1.3.2")
@@ -72,12 +76,12 @@ if __name__ == "__main__":
 
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
 
-    show_status("config: ", once_off=True)
-    show_status("  - get artwork: %yellow%" + (save_or_embed \
-        if save_or_embed in ["save", "embed"] else "no"), once_off=True)
-    show_status("  - exclude: %yellow%" + ("none" \
-        if not exclude else str(exclude)), once_off=True)
-    show_status("  - folder: %yellow%" + download_folder_name, once_off=True)
+    pretty_print("config: ")
+    pretty_print("  - get artwork: %yellow%" + (save_or_embed \
+        if save_or_embed in ["save", "embed"] else "no"))
+    pretty_print("  - exclude: %yellow%" + ("none" \
+        if not exclude else str(exclude)))
+    pretty_print("  - folder: %yellow%" + download_folder_name)
 
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
 
