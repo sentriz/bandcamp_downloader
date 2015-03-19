@@ -1,27 +1,28 @@
-from .aesthetics import show_status, colour
+from .aesthetics import show_status
+from .aesthetics import colour
 import os
 import sys
         
-# sentriz
 def url_is_valid(url):
     if url == "!testing!":
         return True
+        
     requirements = ["http", "://", ".bandcamp.com", "/album/"] 
-    for part in requirements:
-        if url.find(part) < 0:
-            return False
-    return True
     
-def error():
-    print("- see bandcamp_dlr.py --help")
-    sys.exit(1)           
+    for part in requirements:
+        if part not in url:
+            return False
+            
+    return True         
             
 def yes_or_no(question):
+
     yes = ["yes", "y", "ye"]
     no = ["no", "n", ""] # "" for default answer
     
     print(question, end="")
     choice = input().lower()
+    
     if choice in yes:
        return True
     elif choice in no:
@@ -30,14 +31,7 @@ def yes_or_no(question):
        print(colour("%red%please provide a valid option"))
     
 if __name__ == "__main__":
-
-    # damn relative imports ..
-    # running this as __main__ won't work anymore.
-    # anyone wanna tell me what's going on? :)
-    
-    mk_cd("test_folder")
-    mk_cd("test_folder_in_test_folder")
-    
+   
     print(url_is_valid("http://artist.bandcamp.com/album/album"))
     print(url_is_valid("http://artist.bindcomp.com/album/album"))
     print(url_is_valid("https://artist.bandcamp.com/album/album/"))
