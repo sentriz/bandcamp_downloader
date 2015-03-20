@@ -77,9 +77,9 @@ if __name__ == "__main__":
 
     pretty_print("config: ")
     pretty_print("  - get artwork: %yellow%" + (save_or_embed \
-        if save_or_embed in ["save", "embed"] else "no"))
-    pretty_print("  - exclude: %yellow%" + ("none" \
-        if not exclude else str(exclude)))
+        if save_or_embed else "no"))
+    pretty_print("  - exclude: %yellow%" + (str(exclude) \
+        if exclude else "none"))
     pretty_print("  - folder: %yellow%" + download_folder_name)
 
     # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
