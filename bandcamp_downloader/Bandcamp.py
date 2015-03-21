@@ -1,7 +1,7 @@
 from lib.utilities.aesthetics import colour
-from lib.utilities.aesthetics import show_status
 from lib.utilities.aesthetics import pretty_print
-from lib.utilities.debugging import debugmethods
+from lib.utilities.aesthetics import show_status
+#from lib.utilities.debugging import debugmethods
 from urllib.error import HTTPError
 from urllib.error import URLError
 from urllib.request import Request
@@ -13,7 +13,6 @@ import mutagen.mp3
 import os
 import sys
 
-#@debugmethods
 class Album:
 
     def __init__(self, url, save_or_embed, exclude, download_folder_name):
@@ -25,8 +24,8 @@ class Album:
         }
 
         data = self._get_data()
-        show_status("sorting data")
 
+        show_status("sorting data")
         self.album_artist = data["_"]["artist"]
         self.art_url = data["_"]["artFullsizeUrl"]
         self.artist = data["_"]["artist"]
@@ -46,73 +45,74 @@ class Album:
 
     def _write_tags(self, filename, track_num):
         """
-        > write ID3 tags to .mp3 files.
-        *
+        > write ID3 tags to .mp3 files
         """
-        pretty_print("writing id3 tags for file \"{}\"".format(filename))
-
+        pretty_print("writing id3 tags for file \"{0}\"".format(filename))
+        track_num_index = track_num - 1
         tags = {
             # "KEY": (tag, "tag name")
             "TALB": (self.title, "album"),
-            "TIT2": (self.tracks[track_num]["title"], "title"),
+            "TIT2": (self.tracks[track_num_index]["title"], "title"),
             "TPE1": (self.artist, "artist"),
             "TPE2": (self.album_artist, "album artist"),
-            "TRCK": ("{}/{}".format(self.tracks[track_num]["track_num"],
+            "TRCK": ("{0}/{1}".format(self.tracks[track_num_index]["track_num"],
                 self.total_tracks), "track no./total"),
             "TYER": (self.year, "year")
         }
 
-        track = mutagen.mp3.MP3(filename)
-        for tag, tuple in tags.items():
-            value, name = tuple
+        for tag, (value, name) in tags.items():
             track[tag] = getattr(mutagen.id3, tag)(encoding=3, text=value)
-            print("- {}: \"{}\"".format(name, value))
+            print("- {0}: \"{1}\"".format(name, value))
+
         track.save()
 
-    def _get_data(self, user_agent=None): #{
+    def _get_data(self, user_agent=None):
         user_agent = user_agent or "Mozilla/5.0 (compatible; MSIE 9.0;" \
             " Windows NT 6.1; Win64; x64; Trident/5.0)"
+        headers = {
+            "User-Agent": user_agent
+        }
 
         try:
             show_status("downloading webpage")
-            req = Request(self.config["url"], headers = {"User-Agent": user_agent})
+            req = Request(self.config["url"], headers = headers)
             response = urlopen(req)
-            data = response.read()
+            encoded_page = response.read()
+            page = encoded_page.decode()
             response.close()
             show_status(status = "%green%done")
         except URLError as e:
             if hasattr(e, "reason"):
-                print("er")
                 show_status(status = "%red%failed to reach a server." \
-                    " reason: \"{}\"".format(e.reason))
+                    " reason: \"{0}\"".format(e.reason))
             elif hasattr(e, "code"):
-                print("er")
                 show_status(status = "%red%server couldn't fulfil the request." \
-                    " code: \"{}\"".format(e.code))
+                    " code: \"{0}\"".format(e.code))
             sys.exit(1)
 
-        data = data.decode(sys.stdout.encoding)
         show_status("stripping page")
-        data = data.split("var TralbumData = {\n")[-1]
-        data = data[0:data.index("};")]
+        page = page.split("var TralbumData = {\n")[-1]
+        page = page[0:page.index("};")]
         show_status(status = "%green%done")
+        data = jsobj.read_js_object("var _ = {" + page + "};")
 
-        return jsobj.read_js_object("var _ = {" + data + "};")
+        return data
 
     def _download_tracks(self):
         for track in self.tracks:
-            if track["track_num"] not in self.config["exclude"]:
-                pretty_print("%green%downloading %reset%track #{} \"{}\" ".format(
+            if track["track_num"] in self.config["exclude"]:
+                pretty_print("%red%skipping %reset%track #{0} \"{1}\"".format(
                     track["track_num"], track["title"])
                 )
-                raw_file = wgetter.download(track["url"])
-                new_file = "{}. {}.mp3".format(track["track_num"], track["title"])
-                os.rename(raw_file, new_file)
-                self._write_tags(new_file, track["track_num"] - 1)
-            else:
-                pretty_print("%red%skipping %reset%track #{} \"{}\" ".format(
-                    track["track_num"], track["title"])
-                )
+                continue
+
+            pretty_print("%green%downloading %reset%track #{0} \"{1}\"".format(
+                track["track_num"], track["title"])
+            )
+            raw_file = wgetter.download(track["url"])
+            new_file = "{0}. {1}.mp3".format(track["track_num"], track["title"])
+            os.rename(raw_file, new_file)
+            self._write_tags(new_file, track["track_num"])
 
     def _download_art(self):
         try:
@@ -128,9 +128,9 @@ class Album:
     def _embed_art(self):
         pretty_print("%dim%downloading temporary artwork to embed")
         raw_file = wgetter.download(self.art_url)
-
         all_tracks = [file for file in os.listdir() if \
             os.path.splitext(file)[1] == ".mp3"]
+
         for track in all_tracks:
             muta_track = mutagen.mp3.MP3(track)
             muta_track["APIC:Cover"] = mutagen.id3.APIC(
@@ -141,7 +141,8 @@ class Album:
                 data = open(raw_file, "rb").read()
             )
             muta_track.save()
-            pretty_print("%dim%embeded artowork for track \"{}\"".format(track))
+            pretty_print("%dim%embeded artowork for track \"{0}\"".format(track))
+
         try:
             os.remove(raw_file)
             pretty_print("%dim%deleted temporary artwork")
@@ -150,7 +151,7 @@ class Album:
 
     def _mk_cd(self, dir_name):
         try:
-            show_status("creating directory \"%dim%{}%bright%\"".format(dir_name))
+            show_status("creating directory \"%dim%{0}%bright%\"".format(dir_name))
             os.makedirs(dir_name)
             show_status(status = "%green%done")
         except FileExistsError:
@@ -160,13 +161,15 @@ class Album:
             sys.exit(1)
         os.chdir(dir_name)
 
-    # start
     def download(self):
-        # make and change directories
+        """
+        > main method
+        """
+        # create and change directories
         self._mk_cd(self.config["download_folder_name"])
-        self._mk_cd("{} - {}".format(self.artist, self.title))
-
+        self._mk_cd("{0} - {1}".format(self.artist, self.title))
         self._download_tracks()
+
         if self.config["save_or_embed"] == "save":
             self._download_art()
         elif self.config["save_or_embed"] == "embed":
