@@ -40,7 +40,8 @@ if __name__ == "__main__":
 
     if args["--exclude"]:
         try:
-            exclude = [int(n) for n in args["--exclude"].replace(" ", "").split(",")]
+            exclude_string = args["--exclude"].replace(" ", "")
+            exclude = [int(n) for n in exclude_string.split(",")]
         except ValueError:
             show_status(status = "%red%invalid exclude list")
             error()
@@ -55,7 +56,7 @@ if __name__ == "__main__":
 
     if args['--artist'] and args['--album']:
         show_status(status = "%yellow%artist/album found")
-        url = "http://{}.bandcamp.com/album/{}".format(
+        url = "http://{0}.bandcamp.com/album/{1}".format(
             args['--artist'], args['--album']
         )
     elif args['<url>']:
