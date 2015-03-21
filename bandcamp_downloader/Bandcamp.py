@@ -59,7 +59,8 @@ class Album:
                 self.total_tracks), "track no./total"),
             "TYER": (self.year, "year")
         }
-
+        
+        track = mutagen.mp3.MP3(filename)
         for tag, (value, name) in tags.items():
             track[tag] = getattr(mutagen.id3, tag)(encoding=3, text=value)
             print("- {0}: \"{1}\"".format(name, value))
