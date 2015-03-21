@@ -67,6 +67,9 @@ class Album:
         track.save()
 
     def _get_data(self, user_agent=None):
+        """
+        > parse bandcamp.com and return relevant information
+        """
         user_agent = user_agent or "Mozilla/5.0 (compatible; MSIE 9.0;" \
             " Windows NT 6.1; Win64; x64; Trident/5.0)"
         headers = {
@@ -99,6 +102,10 @@ class Album:
         return data
 
     def _download_tracks(self):
+        """
+        > download tracks using the wgetter module
+        * files are renamed to "{trackno}. {trackname}.mp3"
+        """
         for track in self.tracks:
             if track["track_num"] in self.config["exclude"]:
                 pretty_print("%red%skipping %reset%track #{0} \"{1}\"".format(
@@ -115,30 +122,40 @@ class Album:
             self._write_tags(new_file, track["track_num"])
 
     def _download_art(self):
+        """
+        > download album artwork using the wgetter module
+        * file is renamed to "front.jpg"
+        """
         try:
             pretty_print("%green%downloading %reset%artwork")
             raw_file = wgetter.download(self.art_url)
             os.rename(raw_file, "front.jpg")
         except (FileNotFoundError, FileExistsError):
-            pretty_print("%red%failed %reset%to download (or rename) artwork")
+            pretty_print("%red%failed %reset%to download or rename artwork")
         finally:
             if os.path.isfile(raw_file):
                 os.remove(raw_file)
 
     def _embed_art(self):
+        """
+        > embed album artwork into each track
+        * artwork is temporarily downloaded first, and removed later
+        * artwork is embed with the mutagen library
+        """
         pretty_print("%dim%downloading temporary artwork to embed")
         raw_file = wgetter.download(self.art_url)
+        artwork_data = open(raw_file, "rb").read()
         all_tracks = [file for file in os.listdir() if \
             os.path.splitext(file)[1] == ".mp3"]
 
         for track in all_tracks:
             muta_track = mutagen.mp3.MP3(track)
             muta_track["APIC:Cover"] = mutagen.id3.APIC(
-                encoding = 3,
-                mime = "image/jpeg",
-                type = 3,
-                desc = "Cover",
-                data = open(raw_file, "rb").read()
+                encoding=3,
+                mime="image/jpeg",
+                type=3,
+                desc="Cover",
+                data=artwork_data
             )
             muta_track.save()
             pretty_print("%dim%embeded artowork for track \"{0}\"".format(track))
@@ -150,6 +167,9 @@ class Album:
             show_status("%dim%%red%failed %reset%to delete temporary art file " + raw_file)
 
     def _mk_cd(self, dir_name):
+        """
+        > create and cd into a dir_name provided 
+        """
         try:
             show_status("creating directory \"%dim%{0}%bright%\"".format(dir_name))
             os.makedirs(dir_name)
@@ -164,8 +184,10 @@ class Album:
     def download(self):
         """
         > main method
+        * create and change into a folder named after --folder
+        * create and change into a folder named "{artist_name} - {album_name}"
+        * download art or embed art, depending on --save-art or --embed-art
         """
-        # create and change directories
         self._mk_cd(self.config["download_folder_name"])
         self._mk_cd("{0} - {1}".format(self.artist, self.title))
         self._download_tracks()
