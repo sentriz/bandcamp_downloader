@@ -60,6 +60,7 @@ class Album:
             "TYER": (self.year, "year")
         }
 
+        track = mutagen.mp3.MP3(filename)
         for tag, (value, name) in tags.items():
             track[tag] = getattr(mutagen.id3, tag)(encoding=3, text=value)
             print("- {0}: \"{1}\"".format(name, value))
@@ -168,7 +169,7 @@ class Album:
 
     def _mk_cd(self, dir_name):
         """
-        > create and cd into a dir_name provided 
+        > create and cd into a dir_name provided
         """
         try:
             show_status("creating directory \"%dim%{0}%bright%\"".format(dir_name))
