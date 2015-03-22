@@ -66,8 +66,7 @@ Examples
 API Examples
 -----
 
-1. (tested on python 3.4)
-      ````python
+    ````python
     import Bandcamp
 
     album = Bandcamp.Album(
@@ -78,7 +77,7 @@ API Examples
     )
     print(album.title + " by " + album.artist)
     album.download()
-      ````
+    ````
 
 FAQ
 -----
