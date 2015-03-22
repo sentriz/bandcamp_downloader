@@ -19,7 +19,7 @@ Third party modules
 #### required ####
 
 |name/link|use|
-|--|--|
+|:--|:--|
 |[docopt](https://pypi.python.org/pypi/docopt)|argument parsing|
 |[mutagen](https://pypi.python.org/pypi/mutagen)|mp3 tagging|
 |[slimit](https://pypi.python.org/pypi/slimit)|JavaScript minifier|
