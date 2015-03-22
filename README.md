@@ -63,17 +63,21 @@ Examples
     bandcamp_dlr.py --artist="the-doors" --album="la-woman" --folder="My Music"
     bandcamp_dlr.py --artist="pinkfloyd" --album="dsotm" --exclude="3, 5, 7"
 
-API Examples
+API Example
 -----
 
 ````python
 import Bandcamp
 
 album = Bandcamp.Album(
-    url = "http://ARTIST.bandcamp.com/album/ALBUM",
-    save_or_embed = "save",             # for artwork, this save it. use "embed" to embed it.
-    exclude = [],                       # or [1, 2], for example to exclude tracks 1 and 2.
-    download_folder_name = "downloads"  # download tracks to folder "downloads".
+    url = "http://{artist}.bandcamp.com/album/{album}",
+    # "save" or "embed" album artwork
+    save_or_embed = "save",
+    # a list of integers to exclude when downloading
+    # "exclude = [1, 2]", for example, will exclude tracks 1 and 2
+    exclude = [],
+    # download tracks to folder "downloads"
+    download_folder_name = "downloads"
 )
 print(album.title + " by " + album.artist)
 album.download()
