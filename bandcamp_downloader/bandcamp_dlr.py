@@ -18,14 +18,16 @@ Examples:
   bandcamp_dlr.py --artist "pinkfloyd" --album "dsotm" --exclude "3, 5, 7"
 """
 
+import sys
+
 from docopt import docopt
+
 from lib.utilities.aesthetics import colour
 from lib.utilities.aesthetics import pretty_print
 from lib.utilities.aesthetics import show_status
 from lib.utilities.functions import url_is_valid
 from lib.utilities.functions import yes_or_no
 import Bandcamp
-import sys
 
 def error():
     print("- see bandcamp_dlr.py --help")
@@ -34,7 +36,7 @@ def error():
 if __name__ == "__main__":
     args = docopt(__doc__, version="bandcamp_dlr v1.3.2")
 
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
+    ## parse arguments ##
 
     show_status("parsing arguments")
 
@@ -74,7 +76,7 @@ if __name__ == "__main__":
     else:
         save_or_embed = None
 
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
+    ## display arguments to user ##
 
     pretty_print("config: ")
     pretty_print("  - get artwork: %yellow%" + (save_or_embed \
@@ -83,15 +85,16 @@ if __name__ == "__main__":
         if exclude else "none"))
     pretty_print("  - folder: %yellow%" + download_folder_name)
 
-    # . . . - - - . . . # . . . - - - . . . # . . . - - - . . . #
+    ## create class ##
 
-    # create class
     album = Bandcamp.Album(
         url = url,
         save_or_embed = save_or_embed,
         exclude = exclude,
         download_folder_name = download_folder_name
     )
+
+    ## ask user if they want to download and download if they do ##
 
     prompt = "%yellow%%dim%sure you want to download \"%bright%{title}%dim%\" by " \
         "%bright%{artist}%dim%? %bright%[y/N] %dim%> ".format(
@@ -100,7 +103,6 @@ if __name__ == "__main__":
         )
 
     if yes_or_no(colour(prompt)):
-        # start
         album.download()
     else:
         sys.exit()
