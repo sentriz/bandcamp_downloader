@@ -24,7 +24,6 @@ Third party modules
 |[mutagen](https://pypi.python.org/pypi/mutagen)|mp3 tagging|
 |[slimit](https://pypi.python.org/pypi/slimit)|JavaScript minifier|
 
-
 #### included ####
 
 |name/link|use|author|
