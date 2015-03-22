@@ -1,9 +1,11 @@
 
 ![!](.logo.png)
 
-bandcamp_dlr is a python **3+** script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
+bandcamp_dlr is a python *3+* script for downloading, renaming, and tagging albums from [Bandcamp](http://bandcamp.com/).
 You must supply the script an artist and an album name. These must be exactly how you see them in the album url.
 http://**artist**.bandcamp.com/album/**album-name**/
+
+###### note: this software has only been tested on Python 3.4.0, please report any issues you may have on earlier Python 3 versions
 
 Installation
 -----------
