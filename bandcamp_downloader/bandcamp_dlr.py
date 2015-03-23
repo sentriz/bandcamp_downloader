@@ -6,7 +6,7 @@ Usage:
 
 Options:
   --embed-art      Embed album artwork
-  --exclude <list> List of tracks to exclude from download. (seperated by ",")
+  --exclude <list> List of tracks to exclude from download. (separated by ",")
   --folder <name>  Name of download folder [default: downloads]
   --save-art       Download album artwork
   -h, --help       Show this screen
