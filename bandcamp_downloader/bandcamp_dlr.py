@@ -1,16 +1,16 @@
 """
 Usage:
-  bandcamp_dlr.py (<url> | --artist <name> --album <name>)
-                  [--save-art | --embed-art] [--folder <name>] [--exclude <list>]
-                  [--help] [--version]
+  bandcamp_dlr.py (<url> | --artist=<name> --album=<name>)
+                  [--save-art | --embed-art] [--folder=<name>] [--exclude=<list>]
+  bandcamp_dlr.py (--help | --version)
 
 Options:
-  --embed-art      Embed album artwork
-  --exclude <list> List of tracks to exclude from download. (separated by ",")
-  --folder <name>  Name of download folder [default: downloads]
-  --save-art       Download album artwork
-  -h, --help       Show this screen
-  -v, --version    Show version
+  --embed-art       Embed album artwork
+  --exclude=<list>  List of tracks to exclude from download. (separated by ",")
+  --folder=<name>   Name of download folder [default: downloads]
+  --save-art        Download album artwork
+  -h, --help        Show this screen
+  -v, --version     Show version
 
 Examples:
   bandcamp_dlr.py http://frank-zappa.bandcamp.com/album/hot-rats/ --save-art
