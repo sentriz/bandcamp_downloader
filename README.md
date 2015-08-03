@@ -83,7 +83,7 @@ FAQ
 -----
 
 * *Download has stopped at x%, help?*  
-    Send your shell a KeyboardInterrupt. ^C, ^Z, ect.
+    Send your shell a KeyboardInterrupt. ^Z, ect.
 
 * *Will this software work on any OS?*  
     It has only been tested on a Windows machine (so far), but it has been developed in a way that should make it cross-platform. (but not cross-pyversion)
