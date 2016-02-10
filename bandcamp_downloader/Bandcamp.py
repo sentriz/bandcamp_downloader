@@ -117,7 +117,7 @@ class Album:
             pretty_print("%green%downloading %reset%track #{0} \"{1}\"".format(
                 track["track_num"], track["title"])
             )
-            raw_file = wgetter.download(track["url"])
+            raw_file = wgetter.download("http:" + track["url"])
             new_file = "{0}. {1}.mp3".format(track["track_num"], track["title"])
             os.rename(raw_file, new_file)
             self._write_tags(new_file, track["track_num"])
